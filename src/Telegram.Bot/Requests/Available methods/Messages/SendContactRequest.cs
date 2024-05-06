@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Telegram.Bot.Requests.Abstractions;
 using Telegram.Bot.Types.ReplyMarkups;
 
@@ -75,48 +74,10 @@ public class SendContactRequest : RequestBase<Message>, IChatTargetable, IBusine
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public IReplyMarkup? ReplyMarkup { get; set; }
 
-    /// <inheritdoc cref="Abstractions.Documentation.ReplyToMessageId"/>
-    [Obsolete($"This property is deprecated, use {nameof(ReplyParameters)} instead")]
-    [JsonIgnore]
-    public int? ReplyToMessageId
-    {
-        get => ReplyParameters?.MessageId;
-        set
-        {
-            if (value is null)
-            {
-                ReplyParameters = null;
-            }
-            else
-            {
-                ReplyParameters ??= new();
-                ReplyParameters.MessageId = value.Value;
-            }
-        }
-    }
-
-    /// <summary>
-    /// Initializes a new request with chatId, phoneNumber and firstName
-    /// </summary>
-    /// <param name="chatId">Unique identifier for the target chat or username of the target channel
-    /// (in the format <c>@channelusername</c>)
-    /// </param>
-    /// <param name="phoneNumber">Contact's phone number</param>
-    /// <param name="firstName">Contact's first name</param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public SendContactRequest(ChatId chatId, string phoneNumber, string firstName)
-        : this()
-    {
-        ChatId = chatId;
-        PhoneNumber = phoneNumber;
-        FirstName = firstName;
-    }
-
     /// <summary>
     /// Initializes a new request
     /// </summary>
     public SendContactRequest()
-        : base("sendContact")
+        : base("sendContact", TelegramBotClientJsonSerializerContext.Instance.SendContactRequest)
     { }
 }

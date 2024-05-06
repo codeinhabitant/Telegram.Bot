@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Telegram.Bot.Requests.Abstractions;
 
 // ReSharper disable once CheckNamespace
@@ -40,23 +39,7 @@ public class SetChatPermissionsRequest : RequestBase<bool>, IChatTargetable
     /// <summary>
     /// Initializes a new request with chatId and new default permissions
     /// </summary>
-    /// <param name="chatId">Unique identifier for the target chat or username of the target channel
-    /// (in the format <c>@channelusername</c>)
-    /// </param>
-    /// <param name="permissions">New default chat permissions</param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public SetChatPermissionsRequest(ChatId chatId, ChatPermissions permissions)
-        : this()
-    {
-        ChatId = chatId;
-        Permissions = permissions;
-    }
-
-    /// <summary>
-    /// Initializes a new request with chatId and new default permissions
-    /// </summary>
     public SetChatPermissionsRequest()
-        : base("setChatPermissions")
+        : base("setChatPermissions", TelegramBotClientJsonSerializerContext.Instance.SetChatPermissionsRequest)
     { }
 }

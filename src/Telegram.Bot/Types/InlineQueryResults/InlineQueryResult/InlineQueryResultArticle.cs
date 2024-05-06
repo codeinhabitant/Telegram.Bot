@@ -1,5 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-
 // ReSharper disable once CheckNamespace
 namespace Telegram.Bot.Types.InlineQueryResults;
 
@@ -63,25 +61,4 @@ public class InlineQueryResultArticle : InlineQueryResult
     [JsonInclude]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public int? ThumbnailHeight { get; set; }
-
-    /// <summary>
-    /// Initializes a new <see cref="InlineQueryResultArticle"/> object
-    /// </summary>
-    /// <param name="id">Unique identifier of this result</param>
-    /// <param name="title">Title of the result</param>
-    /// <param name="inputMessageContent">Content of the message to be sent</param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public InlineQueryResultArticle(string id, string title, InputMessageContent inputMessageContent)
-        : base(id)
-    {
-        Title = title;
-        InputMessageContent = inputMessageContent;
-    }
-
-    /// <summary>
-    /// Initializes a new <see cref="InlineQueryResultArticle"/> object
-    /// </summary>
-    public InlineQueryResultArticle()
-    { }
 }

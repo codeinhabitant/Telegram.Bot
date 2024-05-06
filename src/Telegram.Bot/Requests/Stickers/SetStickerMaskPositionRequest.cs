@@ -1,4 +1,4 @@
-using System.Diagnostics.CodeAnalysis;
+
 
 // ReSharper disable once CheckNamespace
 namespace Telegram.Bot.Requests;
@@ -27,23 +27,9 @@ public class SetStickerMaskPositionRequest : RequestBase<bool>
     public MaskPosition? MaskPosition { get; set; }
 
     /// <summary>
-    /// Initializes a new request with sticker
-    /// </summary>
-    /// <param name="sticker">
-    /// <see cref="InputFileId">File identifier</see> of the sticker
-    /// </param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public SetStickerMaskPositionRequest(InputFileId sticker)
-        : this()
-    {
-        Sticker = sticker;
-    }
-
-    /// <summary>
     /// Initializes a new request
     /// </summary>
     public SetStickerMaskPositionRequest()
-        : base("setStickerMaskPosition")
+        : base("setStickerMaskPosition", TelegramBotClientJsonSerializerContext.Instance.SetStickerMaskPositionRequest)
     { }
 }

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Telegram.Bot.Types.Payments;
 
 // ReSharper disable once CheckNamespace
@@ -163,46 +162,9 @@ public class CreateInvoiceLinkRequest : RequestBase<string>
     public bool? IsFlexible { get; set; }
 
     /// <summary>
-    /// Initializes a new request with title, description, payload, providerToken, currency
-    /// and an array of <see cref="LabeledPrice"/>
-    /// </summary>
-    /// <param name="title">Product name, 1-32 characters</param>
-    /// <param name="description">Product description, 1-255 characters</param>
-    /// <param name="payload">Bot-defined invoice payload, 1-128 bytes</param>
-    /// <param name="providerToken">
-    /// Payments provider token, obtained via <a href="https://t.me/botfather">@BotFather</a>
-    /// </param>
-    /// <param name="currency">
-    /// Three-letter ISO 4217 currency code, see
-    /// <a href="https://core.telegram.org/bots/payments#supported-currencies">more on currencies</a>
-    /// </param>
-    /// <param name="prices">
-    /// Price breakdown, a list of components (e.g. product price, tax, discount, delivery cost,
-    /// delivery tax, bonus, etc.)
-    /// </param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public CreateInvoiceLinkRequest(
-        string title,
-        string description,
-        string payload,
-        string providerToken,
-        string currency,
-        IEnumerable<LabeledPrice> prices)
-        : this()
-    {
-        Title = title;
-        Description = description;
-        Payload = payload;
-        ProviderToken = providerToken;
-        Currency = currency;
-        Prices = prices;
-    }
-
-    /// <summary>
     /// Initializes a new request
     /// </summary>
     public CreateInvoiceLinkRequest()
-        : base("createInvoiceLink")
+        : base("createInvoiceLink", TelegramBotClientJsonSerializerContext.Instance.CreateInvoiceLinkRequest)
     { }
 }

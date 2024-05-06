@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using Telegram.Bot.Requests.Abstractions;
 using Telegram.Bot.Types.Enums;
@@ -48,33 +47,18 @@ public class SetStickerSetThumbnailRequest : FileRequestBase<bool>, IUserTargeta
     public required StickerFormat Format { get; init; }
 
     /// <summary>
-    /// Initializes a new request with sticker and position
-    /// </summary>
-    /// <param name="name">Sticker set name</param>
-    /// <param name="userId">User identifier of the sticker set owner</param>
-    /// <param name="format">Format of the thumbnail</param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public SetStickerSetThumbnailRequest(string name, long userId, StickerFormat format)
-        : this()
-    {
-        Name = name;
-        UserId = userId;
-        Format = format;
-    }
-
-    /// <summary>
     /// Initializes a new request
     /// </summary>
     public SetStickerSetThumbnailRequest()
-        : base("setStickerSetThumbnail")
+        : base("setStickerSetThumbnail", TelegramBotClientJsonSerializerContext.Instance.SetStickerSetThumbnailRequest)
     { }
 
     /// <inheritdoc />
     public override HttpContent? ToHttpContent() =>
         Thumbnail switch
         {
-            InputFileStream thumbnail => ToMultipartFormDataContent(fileParameterName: "thumbnail", inputFile: thumbnail),
+            InputFileStream thumbnail =>
+                ToMultipartFormDataContent(TelegramBotClientJsonSerializerContext.Instance.SetStickerSetThumbnailRequest, fileParameterName: "thumbnail", inputFile: thumbnail),
             _                         => base.ToHttpContent()
         };
 }

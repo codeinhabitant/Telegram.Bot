@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Telegram.Bot.Requests.Abstractions;
 
 // ReSharper disable once CheckNamespace
@@ -18,23 +17,9 @@ public class DeleteChatStickerSetRequest : RequestBase<bool>, IChatTargetable
     public required ChatId ChatId { get; init; }
 
     /// <summary>
-    /// Initializes a new request with chatId
-    /// </summary>
-    /// <param name="chatId">Unique identifier for the target chat or username of the target channel
-    /// (in the format <c>@channelusername</c>)
-    /// </param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public DeleteChatStickerSetRequest(ChatId chatId)
-        : this()
-    {
-        ChatId = chatId;
-    }
-
-    /// <summary>
     /// Initializes a new request
     /// </summary>
     public DeleteChatStickerSetRequest()
-        : base("deleteChatStickerSet")
+        : base("deleteChatStickerSet", TelegramBotClientJsonSerializerContext.Instance.DeleteChatStickerSetRequest)
     { }
 }

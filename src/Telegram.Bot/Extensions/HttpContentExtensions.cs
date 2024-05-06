@@ -3,10 +3,10 @@ using System.Runtime.CompilerServices;
 
 namespace Telegram.Bot.Extensions;
 
-internal static class HttpContentExtensions
+public static class HttpContentExtensions
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static MultipartFormDataContent AddContentIfInputFile(
+    public static MultipartFormDataContent AddContentIfInputFile(
         this MultipartFormDataContent multipartContent,
         InputFile? media,
         string name)

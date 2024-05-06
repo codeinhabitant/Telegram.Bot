@@ -1,5 +1,4 @@
 using System;
-using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit.Abstractions;
@@ -10,14 +9,13 @@ namespace Telegram.Bot.Tests.Integ.Framework.XunitExtensions;
 [Serializable]
 public class RetryTestCase : XunitTestCase
 {
-    int _maxRetries;
-    int _delaySeconds;
-    string _exceptionTypeFullName = default!;
-
-    [EditorBrowsable(EditorBrowsableState.Never)]
     [Obsolete("Called by the de-serializer", true)]
     public RetryTestCase()
     { }
+
+    int _maxRetries;
+    int _delaySeconds;
+    string _exceptionTypeFullName = default!;
 
     public RetryTestCase(
         IMessageSink diagnosticMessageSink,

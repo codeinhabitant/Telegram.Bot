@@ -1,5 +1,8 @@
 ﻿namespace Telegram.Bot.Serialization;
 
+/// <summary>
+/// Utility class for <see cref="UnixDateTimeConverter"/>.
+/// </summary>
 internal static class UnixDateTimeConverterUtil
 {
     private static readonly DateTime UnixEpoch = new(
@@ -12,7 +15,15 @@ internal static class UnixDateTimeConverterUtil
         kind: DateTimeKind.Utc
     );
 
-    internal static DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    /// <summary>
+    /// Reads a Unix timestamp from the reader and converts it to a <see cref="DateTime"/>.
+    /// </summary>
+    /// <param name="reader"></param>
+    /// <param name="typeToConvert"></param>
+    /// <param name="options"></param>
+    /// <returns></returns>
+    /// <exception cref="JsonException"></exception>
+    public static DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         var seconds = reader.GetInt64();
         if (seconds < 0)
@@ -21,7 +32,14 @@ internal static class UnixDateTimeConverterUtil
         return UnixEpoch.AddSeconds(seconds);
     }
 
-    internal static void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
+    /// <summary>
+    /// Writes a <see cref="DateTime"/> value as a Unix timestamp.
+    /// </summary>
+    /// <param name="writer"></param>
+    /// <param name="value"></param>
+    /// <param name="options"></param>
+    /// <exception cref="JsonException"></exception>
+    public static void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
     {
         long seconds = (long)(value.ToUniversalTime() - UnixEpoch).TotalSeconds;
         if (seconds < 0)

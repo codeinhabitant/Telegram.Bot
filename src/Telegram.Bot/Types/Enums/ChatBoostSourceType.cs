@@ -1,3 +1,5 @@
+using Telegram.Bot.Serialization.EnumConverters;
+
 namespace Telegram.Bot.Types.Enums;
 
 /// <summary>
@@ -6,6 +8,11 @@ namespace Telegram.Bot.Types.Enums;
 [JsonConverter(typeof(ChatBoostSourceTypeConverter))]
 public enum ChatBoostSourceType
 {
+    /// <summary>
+    /// Represents of a new unsupported type.
+    /// </summary>
+    FallbackUnsupported = 0,
+
     /// <summary>
     /// The boost was obtained by subscribing to Telegram Premium
     /// or by gifting a Telegram Premium subscription to another user

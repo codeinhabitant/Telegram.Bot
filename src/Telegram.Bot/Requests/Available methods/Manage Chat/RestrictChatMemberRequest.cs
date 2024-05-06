@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Telegram.Bot.Requests.Abstractions;
 using Telegram.Bot.Serialization;
 
@@ -54,27 +53,9 @@ public class RestrictChatMemberRequest : RequestBase<bool>, IChatTargetable, IUs
     public DateTime? UntilDate { get; set; }
 
     /// <summary>
-    /// Initializes a new request with chatId, userId and new user permissions
-    /// </summary>
-    /// <param name="chatId">Unique identifier for the target chat or username of the target channel
-    /// (in the format <c>@channelusername</c>)
-    /// </param>
-    /// <param name="userId">Unique identifier of the target user</param>
-    /// <param name="permissions">New user permissions</param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public RestrictChatMemberRequest(ChatId chatId, long userId, ChatPermissions permissions)
-        : this()
-    {
-        ChatId = chatId;
-        UserId = userId;
-        Permissions = permissions;
-    }
-
-    /// <summary>
     /// Initializes a new request
     /// </summary>
     public RestrictChatMemberRequest()
-        : base("restrictChatMember")
+        : base("restrictChatMember", TelegramBotClientJsonSerializerContext.Instance.RestrictChatMemberRequest)
     { }
 }

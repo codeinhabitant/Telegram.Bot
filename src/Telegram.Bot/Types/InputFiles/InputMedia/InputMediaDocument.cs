@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Telegram.Bot.Types.Enums;
 
 // ReSharper disable once CheckNamespace
@@ -28,16 +27,6 @@ public class InputMediaDocument :
     [JsonInclude]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public bool? DisableContentTypeDetection { get; set; }
-
-    /// <summary>
-    /// Initializes a new document media to send with an <see cref="InputMedia"/>
-    /// </summary>
-    /// <param name="media">File to send</param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public InputMediaDocument(InputFile media)
-        : base(media)
-    { }
 
     /// <summary>
     /// Initializes a new document media to send with an <see cref="InputMedia"/>

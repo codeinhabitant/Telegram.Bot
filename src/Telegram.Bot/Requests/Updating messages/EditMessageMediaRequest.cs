@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using Telegram.Bot.Extensions;
 using Telegram.Bot.Requests.Abstractions;
@@ -42,29 +41,10 @@ public class EditMessageMediaRequest : FileRequestBase<Message>, IChatTargetable
     public InlineKeyboardMarkup? ReplyMarkup { get; set; }
 
     /// <summary>
-    /// Initializes a new request with chatId, messageId and new media
-    /// </summary>
-    /// <param name="chatId">
-    /// Unique identifier for the target chat or username of the target channel
-    /// (in the format <c>@channelusername</c>)
-    /// </param>
-    /// <param name="messageId">Identifier of the message to edit</param>
-    /// <param name="media">A new media content of the message</param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public EditMessageMediaRequest(ChatId chatId, int messageId, InputMedia media)
-        : this()
-    {
-        ChatId = chatId;
-        MessageId = messageId;
-        Media = media;
-    }
-
-    /// <summary>
     /// Initializes a new
     /// </summary>
     public EditMessageMediaRequest()
-        : base("editMessageMedia")
+        : base("editMessageMedia", TelegramBotClientJsonSerializerContext.Instance.EditMessageMediaRequest)
     { }
 
     /// <inheritdoc />
@@ -76,7 +56,7 @@ public class EditMessageMediaRequest : FileRequestBase<Message>, IChatTargetable
             return base.ToHttpContent();
         }
 
-        var multipartContent = GenerateMultipartFormDataContent();
+        var multipartContent = GenerateMultipartFormDataContent(TelegramBotClientJsonSerializerContext.Instance.EditMessageMediaRequest);
 
         if (Media.Media is InputFileStream file)
         {

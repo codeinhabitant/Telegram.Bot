@@ -4,3 +4,5 @@ global using System;
 global using System.Text.Json;
 global using System.Text.Json.Serialization;
 global using Telegram.Bot.Types;
+global using Telegram.Bot.Serialization;
+

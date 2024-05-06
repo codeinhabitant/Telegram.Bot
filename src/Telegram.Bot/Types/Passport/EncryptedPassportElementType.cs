@@ -1,3 +1,5 @@
+using Telegram.Bot.Serialization.EnumConverters;
+
 namespace Telegram.Bot.Types.Passport;
 
 /// <summary>
@@ -6,6 +8,11 @@ namespace Telegram.Bot.Types.Passport;
 [JsonConverter(typeof(EncryptedPassportElementTypeConverter))]
 public enum EncryptedPassportElementType
 {
+    /// <summary>
+    /// Represents of a new unsupported type.
+    /// </summary>
+    FallbackUnsupported = 0,
+
     /// <summary>
     /// Personal details
     /// </summary>

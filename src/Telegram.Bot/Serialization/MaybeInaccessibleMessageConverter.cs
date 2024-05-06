@@ -1,40 +1,49 @@
-using System.Reflection;
-
 namespace Telegram.Bot.Serialization;
 
-internal class MaybeInaccessibleMessageConverter : JsonConverter<MaybeInaccessibleMessage>
+internal class MaybeInaccessibleMessageConverter: JsonConverter<MaybeInaccessibleMessage?>
 {
-    static readonly TypeInfo BaseType = typeof(MaybeInaccessibleMessage).GetTypeInfo();
+    public override bool CanConvert(Type typeToConvert) => typeToConvert == typeof(MaybeInaccessibleMessage);
 
-    public override bool CanConvert(Type objectType) =>
-        BaseType.IsAssignableFrom(objectType.GetTypeInfo());
-
-    public override MaybeInaccessibleMessage? Read(
-        ref Utf8JsonReader reader,
-        Type typeToConvert,
-        JsonSerializerOptions options)
+    public override MaybeInaccessibleMessage? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        var clonedReader = reader;
-        var jsonElement = JsonElement.ParseValue(ref clonedReader);
-        if (!jsonElement.TryGetProperty("date", out var dateElement))
-            return null;
-
-        if (!dateElement.TryGetInt64(out long date))
+        if (!JsonDocument.TryParseValue(ref reader, out var element))
         {
-            throw new JsonException($"Unknown chat member status value of '{dateElement}'");
+            throw new JsonException("Could not read JSON value");
         }
 
-        var actualType = date is 0
-            ? typeof(InaccessibleMessage)
-            : typeof(Message);
+        try
+        {
+            var root = element.RootElement;
+            var date = root.GetProperty("date").GetInt64();
 
-        return (MaybeInaccessibleMessage?) JsonSerializer.Deserialize(ref reader, actualType, options);
+            return date switch
+            {
+                0 => JsonSerializer.Deserialize(root.GetRawText(), TelegramBotClientJsonSerializerContext.Instance.InaccessibleMessage),
+                _ => JsonSerializer.Deserialize(root.GetRawText(), TelegramBotClientJsonSerializerContext.Instance.Message),
+            };
+        }
+        finally
+        {
+            element.Dispose();
+        }
     }
 
-    public override void Write(
-        Utf8JsonWriter writer,
-        MaybeInaccessibleMessage value,
-        JsonSerializerOptions options
-    )
-        => JsonSerializer.SerializeToElement(value, options).WriteTo(writer);
+    public override void Write(Utf8JsonWriter writer, MaybeInaccessibleMessage? value, JsonSerializerOptions options)
+    {
+        if (value is not null)
+        {
+            writer.WriteRawValue(value switch
+            {
+                Message message =>
+                    JsonSerializer.Serialize(message, TelegramBotClientJsonSerializerContext.Instance.Message),
+                InaccessibleMessage inaccessibleMessage =>
+                    JsonSerializer.Serialize(inaccessibleMessage, TelegramBotClientJsonSerializerContext.Instance.InaccessibleMessage),
+                _ => throw new JsonException("Unsupported message type")
+            });
+        }
+        else
+        {
+            writer.WriteNullValue();
+        }
+    }
 }

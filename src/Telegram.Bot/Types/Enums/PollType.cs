@@ -1,3 +1,5 @@
+using Telegram.Bot.Serialization.EnumConverters;
+
 namespace Telegram.Bot.Types.Enums;
 
 /// <summary>
@@ -10,6 +12,11 @@ namespace Telegram.Bot.Types.Enums;
 [JsonConverter(typeof(PollTypeConverter))]
 public enum PollType
 {
+    /// <summary>
+    /// Represents of a new unsupported type.
+    /// </summary>
+    FallbackUnsupported = 0,
+
     /// <summary>
     /// Regular poll
     /// </summary>

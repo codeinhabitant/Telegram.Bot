@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Telegram.Bot.Requests.Abstractions;
 using Telegram.Bot.Serialization;
 
@@ -35,27 +34,9 @@ public class BanChatSenderChatRequest : RequestBase<bool>, IChatTargetable
     public DateTime? UntilDate { get; set; }
 
     /// <summary>
-    /// Initializes a new request with chatId and senderChatId
-    /// </summary>
-    /// <param name="chatId">
-    /// Unique identifier for the target chat or username of the target channel (in the format @channelusername)
-    /// </param>
-    /// <param name="senderChatId">
-    /// Unique identifier of the target sender chat
-    /// </param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public BanChatSenderChatRequest(ChatId chatId, long senderChatId)
-        : this()
-    {
-        ChatId = chatId;
-        SenderChatId = senderChatId;
-    }
-
-    /// <summary>
     /// Initializes a new request
     /// </summary>
     public BanChatSenderChatRequest()
-        : base("banChatSenderChat")
+        : base("banChatSenderChat", TelegramBotClientJsonSerializerContext.Instance.BanChatSenderChatRequest)
     { }
 }

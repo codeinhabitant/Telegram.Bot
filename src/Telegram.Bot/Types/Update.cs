@@ -221,6 +221,6 @@ public class Update
         { ChatJoinRequest: not null }         => UpdateType.ChatJoinRequest,
         { ChatBoost: not null }               => UpdateType.ChatBoost,
         { RemovedChatBoost: not null }        => UpdateType.RemovedChatBoost,
-        _                                     => UpdateType.Unknown
+        _                                     => UpdateType.FallbackUnsupported
     };
 }

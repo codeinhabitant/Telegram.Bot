@@ -1,4 +1,6 @@
-﻿namespace Telegram.Bot.Types.Enums;
+﻿using Telegram.Bot.Serialization.EnumConverters;
+
+namespace Telegram.Bot.Types.Enums;
 
 /// <summary>
 /// Type of the reaction
@@ -6,6 +8,11 @@
 [JsonConverter(typeof(ReactionTypeKindConverter))]
 public enum ReactionTypeKind
 {
+    /// <summary>
+    /// Represents of a new unsupported type.
+    /// </summary>
+    FallbackUnsupported = 0,
+
     /// <summary>
     /// The reaction is based on an emoji.
     /// </summary>

@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Telegram.Bot.Requests.Abstractions;
 
 // ReSharper disable once CheckNamespace
@@ -25,25 +24,9 @@ public class SetChatStickerSetRequest : RequestBase<bool>, IChatTargetable
     public required string StickerSetName { get; init; }
 
     /// <summary>
-    /// Initializes a new request with chatId and new stickerSetName
-    /// </summary>
-    /// <param name="chatId">Unique identifier for the target chat or username of the target channel
-    /// (in the format <c>@channelusername</c>)
-    /// </param>
-    /// <param name="stickerSetName">Name of the sticker set to be set as the group sticker set</param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public SetChatStickerSetRequest(ChatId chatId, string stickerSetName)
-        : this()
-    {
-        ChatId = chatId;
-        StickerSetName = stickerSetName;
-    }
-
-    /// <summary>
     /// Initializes a new request
     /// </summary>
     public SetChatStickerSetRequest()
-        : base("setChatStickerSet")
+        : base("setChatStickerSet", TelegramBotClientJsonSerializerContext.Instance.SetChatStickerSetRequest)
     { }
 }

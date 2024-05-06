@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Telegram.Bot.Requests.Abstractions;
 
 // ReSharper disable once CheckNamespace
@@ -27,23 +26,9 @@ public class UnpinChatMessageRequest : RequestBase<bool>, IChatTargetable
     public int? MessageId { get; set; }
 
     /// <summary>
-    /// Initializes a new request with chatId
-    /// </summary>
-    /// <param name="chatId">Unique identifier for the target chat or username of the target channel
-    /// (in the format <c>@channelusername</c>)
-    /// </param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public UnpinChatMessageRequest(ChatId chatId)
-        : this()
-    {
-        ChatId = chatId;
-    }
-
-    /// <summary>
     /// Initializes a new request
     /// </summary>
     public UnpinChatMessageRequest()
-        : base("unpinChatMessage")
+        : base("unpinChatMessage", TelegramBotClientJsonSerializerContext.Instance.UnpinChatMessageRequest)
     { }
 }

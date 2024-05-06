@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Telegram.Bot.Requests.Abstractions;
 using Telegram.Bot.Types.ReplyMarkups;
 
@@ -34,21 +33,7 @@ public class EditInlineMessageMediaRequest : RequestBase<bool>
     /// <summary>
     /// Initializes a new request with inlineMessageId and new media
     /// </summary>
-    /// <param name="inlineMessageId">Identifier of the inline message</param>
-    /// <param name="media">A new media content of the message</param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public EditInlineMessageMediaRequest(string inlineMessageId, InputMedia media)
-        : this()
-    {
-        InlineMessageId = inlineMessageId;
-        Media = media;
-    }
-
-    /// <summary>
-    /// Initializes a new request with inlineMessageId and new media
-    /// </summary>
     public EditInlineMessageMediaRequest()
-        : base("editMessageMedia")
+        : base("editMessageMedia", TelegramBotClientJsonSerializerContext.Instance.EditInlineMessageMediaRequest)
     { }
 }

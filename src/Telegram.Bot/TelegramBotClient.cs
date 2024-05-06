@@ -2,9 +2,10 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
+using System.Text.Json.Serialization.Metadata;
 using System.Threading;
 using System.Threading.Tasks;
-using JetBrains.Annotations;
+
 using Telegram.Bot.Args;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Extensions;
@@ -16,7 +17,7 @@ namespace Telegram.Bot;
 /// <summary>
 /// A client to use the Telegram Bot API
 /// </summary>
-[PublicAPI]
+
 public class TelegramBotClient : ITelegramBotClient
 {
     readonly TelegramBotClientOptions _options;
@@ -82,9 +83,10 @@ public class TelegramBotClient : ITelegramBotClient
     { }
 
     /// <inheritdoc />
-    public virtual async Task<TResponse> MakeRequestAsync<TResponse>(
-        IRequest<TResponse> request,
-        CancellationToken cancellationToken = default)
+    public virtual async Task<TResponse> MakeRequestAsync<TResponse>(IRequest<TResponse> request,
+                                                                     JsonTypeInfo<ApiResponse<TResponse>>
+                                                                         serializerContext,
+                                                                     CancellationToken cancellationToken = default)
     {
         if (request is null) { throw new ArgumentNullException(nameof(request)); }
 
@@ -136,11 +138,12 @@ public class TelegramBotClient : ITelegramBotClient
         if (httpResponse.StatusCode != HttpStatusCode.OK)
         {
             var failedApiResponse = await httpResponse
-                .DeserializeContentAsync<ApiResponse>(
+                .DeserializeContentAsync(
                     guard: response =>
                         response.ErrorCode == default ||
                         // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
                         response.Description is null,
+                    TelegramBotClientJsonSerializerContext.Instance.ApiResponse,
                     cancellationToken
                 )
                 .ConfigureAwait(false);
@@ -149,9 +152,10 @@ public class TelegramBotClient : ITelegramBotClient
         }
 
         var apiResponse = await httpResponse
-            .DeserializeContentAsync<ApiResponse<TResponse>>(
+            .DeserializeContentAsync(
                 guard: response => !response.Ok ||
                                    response.Result is null,
+                serializerContext,
                 cancellationToken
             )
             .ConfigureAwait(false);
@@ -200,7 +204,10 @@ public class TelegramBotClient : ITelegramBotClient
     {
         try
         {
-            await MakeRequestAsync(request: new GetMeRequest(), cancellationToken: cancellationToken)
+            await MakeRequestAsync(
+                    request: new GetMeRequest(),
+                    serializerContext: TelegramBotClientJsonSerializerContext.Instance.ApiResponseUser,
+                    cancellationToken: cancellationToken)
                 .ConfigureAwait(false);
             return true;
         }
@@ -212,6 +219,7 @@ public class TelegramBotClient : ITelegramBotClient
     }
 
     /// <inheritdoc />
+    // ReSharper disable once CognitiveComplexity
     public async Task DownloadFileAsync(
         string filePath,
         Stream destination,
@@ -234,11 +242,12 @@ public class TelegramBotClient : ITelegramBotClient
         if (!httpResponse.IsSuccessStatusCode)
         {
             var failedApiResponse = await httpResponse
-                .DeserializeContentAsync<ApiResponse>(
+                .DeserializeContentAsync(
                     guard: response =>
                         response.ErrorCode == default ||
                         // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
                         response.Description is null,
+                    TelegramBotClientJsonSerializerContext.Instance.ApiResponse,
                     cancellationToken
                 )
                 .ConfigureAwait(false);
@@ -256,13 +265,8 @@ public class TelegramBotClient : ITelegramBotClient
 
         try
         {
-#if NET6_0_OR_GREATER
             await httpResponse.Content.CopyToAsync(destination, cancellationToken)
                 .ConfigureAwait(false);
-#else
-            await httpResponse.Content.CopyToAsync(destination)
-                .ConfigureAwait(false);
-#endif
         }
         catch (Exception exception)
         {

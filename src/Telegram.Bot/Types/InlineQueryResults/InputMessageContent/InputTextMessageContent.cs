@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Telegram.Bot.Types.Enums;
 
 // ReSharper disable once CheckNamespace
@@ -32,7 +31,7 @@ public class InputTextMessageContent : InputMessageContent
     /// </summary>
     [JsonInclude]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public MessageEntity[]? Entities { get; set; } // ToDo: add test
+    public MessageEntity[]? Entities { get; set; }
 
     /// <summary>
     /// Optional. Link preview generation options for the message
@@ -40,36 +39,4 @@ public class InputTextMessageContent : InputMessageContent
     [JsonInclude]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public LinkPreviewOptions? LinkPreviewOptions { get; set; }
-
-    /// <summary>
-    /// Disables link previews for links in this message
-    /// </summary>
-    [Obsolete($"This property is deprecated, use {nameof(LinkPreviewOptions)} instead")]
-    [JsonIgnore]
-    public bool? DisableWebPagePreview
-    {
-        get => LinkPreviewOptions?.IsDisabled;
-        set
-        {
-            LinkPreviewOptions ??= new();
-            LinkPreviewOptions.IsDisabled = value;
-        }
-    }
-
-    /// <summary>
-    /// Initializes a new input text message content
-    /// </summary>
-    /// <param name="messageText">The text of the message</param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public InputTextMessageContent(string messageText)
-    {
-        MessageText = messageText;
-    }
-
-    /// <summary>
-    /// Initializes a new input text message content
-    /// </summary>
-    public InputTextMessageContent()
-    { }
 }

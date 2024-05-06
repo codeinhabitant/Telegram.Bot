@@ -1,4 +1,3 @@
-using Telegram.Bot.Serialization;
 using Telegram.Bot.Types.Enums;
 
 namespace Telegram.Bot.Types;
@@ -10,16 +9,27 @@ namespace Telegram.Bot.Types;
 /// <item><see cref="ReactionTypeCustomEmoji"/></item>
 /// </list>
 /// </summary>
-[CustomJsonPolymorphic("type")]
-[CustomJsonDerivedType(typeof(ReactionTypeEmoji), "emoji")]
-[CustomJsonDerivedType(typeof(ReactionTypeCustomEmoji), "custom_emoji")]
 public abstract class ReactionType
 {
     /// <summary>
     /// Type of the reaction
     /// </summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
-    public abstract ReactionTypeKind Type { get; }
+    public abstract ReactionTypeKind? Type { get; }
+}
+
+public class ReactionTypeFallbackUnsupported : ReactionType
+{
+    /// <inheritdoc />
+    [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
+    public override ReactionTypeKind? Type => ReactionTypeKind.FallbackUnsupported;
+
+    private ReactionTypeFallbackUnsupported() {}
+
+    /// <summary>
+    /// For optimization purposes, use this instance instead of creating a new one.
+    /// </summary>
+    public static ReactionTypeFallbackUnsupported Instance { get; } = new();
 }
 
 /// <summary>
@@ -30,7 +40,7 @@ public class ReactionTypeEmoji : ReactionType
     /// <summary>
     /// Type of the reaction, always "emoji"
     /// </summary>
-    public override ReactionTypeKind Type => ReactionTypeKind.Emoji;
+    public override ReactionTypeKind? Type => ReactionTypeKind.Emoji;
 
     /// <summary>
     /// Reaction emoji. Currently, it can be one of "👍", "👎", "❤", "🔥", "🥰", "👏", "😁",
@@ -56,7 +66,7 @@ public class ReactionTypeCustomEmoji : ReactionType
     /// <summary>
     /// Type of the reaction, always "custom_emoji"
     /// </summary>
-    public override ReactionTypeKind Type => ReactionTypeKind.CustomEmoji;
+    public override ReactionTypeKind? Type => ReactionTypeKind.CustomEmoji;
 
     /// <summary>
     /// Custom emoji identifier

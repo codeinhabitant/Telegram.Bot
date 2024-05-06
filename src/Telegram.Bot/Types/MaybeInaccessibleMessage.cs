@@ -1,5 +1,3 @@
-using Telegram.Bot.Serialization;
-
 namespace Telegram.Bot.Types;
 
 /// <summary>
@@ -9,5 +7,4 @@ namespace Telegram.Bot.Types;
 /// <item><see cref="InaccessibleMessage"/></item>
 /// </list>
 /// </summary>
-[JsonConverter(typeof(MaybeInaccessibleMessageConverter))]
 public abstract class MaybeInaccessibleMessage;

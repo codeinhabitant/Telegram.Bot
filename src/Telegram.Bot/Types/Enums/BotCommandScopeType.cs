@@ -1,4 +1,6 @@
-﻿namespace Telegram.Bot.Types.Enums;
+﻿using Telegram.Bot.Serialization.EnumConverters;
+
+namespace Telegram.Bot.Types.Enums;
 
 /// <summary>
 /// Scope type
@@ -6,6 +8,11 @@
 [JsonConverter(typeof(BotCommandScopeTypeConverter))]
 public enum BotCommandScopeType
 {
+    /// <summary>
+    /// Represents of a new unsupported type.
+    /// </summary>
+    FallbackUnsupported = 0,
+
     /// <summary>
     /// Represents the default <see cref="BotCommandScope"/> of bot commands. Default commands are used if no
     /// commands with a narrower <see cref="BotCommandScope"/> are specified for the user.

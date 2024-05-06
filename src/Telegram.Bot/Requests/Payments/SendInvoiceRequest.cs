@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Telegram.Bot.Requests.Abstractions;
 using Telegram.Bot.Types.Payments;
 using Telegram.Bot.Types.ReplyMarkups;
@@ -213,72 +212,10 @@ public class SendInvoiceRequest : RequestBase<Message>, IChatTargetable
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public InlineKeyboardMarkup? ReplyMarkup { get; set; }
 
-    /// <inheritdoc cref="Abstractions.Documentation.ReplyToMessageId"/>
-    [Obsolete($"This property is deprecated, use {nameof(ReplyParameters)} instead")]
-    [JsonIgnore]
-    public int? ReplyToMessageId
-    {
-        get => ReplyParameters?.MessageId;
-        set
-        {
-            if (value is null)
-            {
-                ReplyParameters = null;
-            }
-            else
-            {
-                ReplyParameters ??= new();
-                ReplyParameters.MessageId = value.Value;
-            }
-        }
-    }
-
-    /// <summary>
-    /// Initializes a new request with chatId, title, description, payload, providerToken, currency
-    /// and an array of <see cref="LabeledPrice"/>
-    /// </summary>
-    /// <param name="chatId">
-    /// Unique identifier for the target chat or username of the target channel
-    /// (in the format <c>@channelusername</c>)
-    /// </param>
-    /// <param name="title">Product name, 1-32 characters</param>
-    /// <param name="description">Product description, 1-255 characters</param>
-    /// <param name="payload">Bot-defined invoice payload, 1-128 bytes</param>
-    /// <param name="providerToken">
-    /// Payments provider token, obtained via <a href="https://t.me/botfather">@BotFather</a>
-    /// </param>
-    /// <param name="currency">
-    /// Three-letter ISO 4217 currency code, see
-    /// <a href="https://core.telegram.org/bots/payments#supported-currencies">more on currencies</a>
-    /// </param>
-    /// <param name="prices">
-    /// Price breakdown, a list of components (e.g. product price, tax, discount, delivery cost,
-    /// delivery tax, bonus, etc.)
-    /// </param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public SendInvoiceRequest(
-        long chatId,
-        string title,
-        string description,
-        string payload,
-        string providerToken,
-        string currency,
-        IEnumerable<LabeledPrice> prices) : this()
-    {
-        ChatId = chatId;
-        Title = title;
-        Description = description;
-        Payload = payload;
-        ProviderToken = providerToken;
-        Currency = currency;
-        Prices = prices;
-    }
-
     /// <summary>
     /// Initializes a new request
     /// </summary>
     public SendInvoiceRequest()
-        : base("sendInvoice")
+        : base("sendInvoice", TelegramBotClientJsonSerializerContext.Instance.SendInvoiceRequest)
     { }
 }

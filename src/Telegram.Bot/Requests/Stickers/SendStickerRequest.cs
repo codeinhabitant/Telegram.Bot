@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using Telegram.Bot.Requests.Abstractions;
 using Telegram.Bot.Types.ReplyMarkups;
@@ -71,39 +70,16 @@ public class SendStickerRequest : FileRequestBase<Message>, IChatTargetable, IBu
     /// <summary>
     /// Initializes a new request chatId and sticker
     /// </summary>
-    /// <param name="chatId">
-    /// Unique identifier for the target chat or username of the target channel
-    /// (in the format <c>@channelusername</c>)
-    /// </param>
-    /// <param name="sticker">
-    /// Sticker to send. Pass a <see cref="InputFileId"/> as String to send a file that
-    /// exists on the Telegram servers (recommended), pass an HTTP URL as a String
-    /// for Telegram to get a .WEBP sticker from the Internet, or upload a new .WEBP
-    /// or .TGS sticker using multipart/form-data.
-    /// Video stickers can only be sent by a <see cref="InputFileId"/>.
-    /// Animated stickers can't be sent via an HTTP URL.
-    /// </param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public SendStickerRequest(ChatId chatId, InputFile sticker)
-        : this()
-    {
-        ChatId = chatId;
-        Sticker = sticker;
-    }
-
-    /// <summary>
-    /// Initializes a new request chatId and sticker
-    /// </summary>
     public SendStickerRequest()
-        : base("sendSticker")
+        : base("sendSticker", TelegramBotClientJsonSerializerContext.Instance.SendStickerRequest)
     { }
 
     /// <inheritdoc />
     public override HttpContent? ToHttpContent() =>
         Sticker switch
         {
-            InputFileStream sticker => ToMultipartFormDataContent(fileParameterName: "sticker", inputFile: sticker),
+            InputFileStream sticker =>
+                ToMultipartFormDataContent(TelegramBotClientJsonSerializerContext.Instance.SendStickerRequest, fileParameterName: "sticker", inputFile: sticker),
             _                       => base.ToHttpContent()
         };
 }

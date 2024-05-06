@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Telegram.Bot.Types.Payments;
 
 // ReSharper disable once CheckNamespace
@@ -164,41 +163,4 @@ public class InputInvoiceMessageContent : InputMessageContent
     [JsonInclude]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public bool? IsFlexible { get; set; }
-
-    /// <summary>
-    /// Initializes with title, description, payload, providerToken, currency and an array of
-    /// <see cref="LabeledPrice"/>
-    /// </summary>
-    /// <param name="title">Product name, 1-32 characters</param>
-    /// <param name="description">Product description, 1-255 characters</param>
-    /// <param name="payload">Bot-defined invoice payload, 1-128 bytes</param>
-    /// <param name="providerToken">Payments provider token, obtained via BotFather</param>
-    /// <param name="currency">Three-letter ISO 4217 currency code</param>
-    /// <param name="prices">
-    /// Price breakdown, a list of components (e.g. product price, tax, discount, delivery cost,
-    /// delivery tax, bonus, etc.)
-    /// </param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public InputInvoiceMessageContent(
-        string title,
-        string description,
-        string payload,
-        string providerToken,
-        string currency,
-        IEnumerable<LabeledPrice> prices)
-    {
-        Title = title;
-        Description = description;
-        Payload = payload;
-        ProviderToken = providerToken;
-        Currency = currency;
-        Prices = prices;
-    }
-
-    /// <summary>
-    /// Initializes a new input message content
-    /// </summary>
-    public InputInvoiceMessageContent()
-    { }
 }

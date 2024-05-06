@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Telegram.Bot.Types.Enums;
 
 // ReSharper disable once CheckNamespace
@@ -87,25 +86,4 @@ public class InlineQueryResultMpeg4Gif : InlineQueryResult
     [JsonInclude]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public InputMessageContent? InputMessageContent { get; set; }
-
-    /// <summary>
-    /// Initializes a new inline query result
-    /// </summary>
-    /// <param name="id">Unique identifier of this result</param>
-    /// <param name="mpeg4Url">A valid URL for the MP4 file. File size must not exceed 1MB.</param>
-    /// <param name="thumbnailUrl">Url of the thumbnail for the result.</param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public InlineQueryResultMpeg4Gif(string id, string mpeg4Url, string thumbnailUrl)
-        : base(id)
-    {
-        Mpeg4Url = mpeg4Url;
-        ThumbnailUrl = thumbnailUrl;
-    }
-
-    /// <summary>
-    /// Initializes a new inline query result
-    /// </summary>
-    public InlineQueryResultMpeg4Gif()
-    { }
 }

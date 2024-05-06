@@ -3,9 +3,13 @@ namespace Telegram.Bot.Types.Enums;
 /// <summary>
 /// Type of a <see cref="InputFile"/>
 /// </summary>
-[JsonConverter(typeof(FileTypeConverter))]
 public enum FileType
 {
+    /// <summary>
+    /// Represents of a new unsupported type.
+    /// </summary>
+    FallbackUnsupported = 0,
+
     /// <summary>
     /// FileStream
     /// </summary>

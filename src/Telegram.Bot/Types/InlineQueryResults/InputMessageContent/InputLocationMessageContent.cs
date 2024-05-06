@@ -1,5 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-
 // ReSharper disable once CheckNamespace
 namespace Telegram.Bot.Types.InlineQueryResults;
 
@@ -51,23 +49,4 @@ public class InputLocationMessageContent : InputMessageContent
     [JsonInclude]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public int? ProximityAlertRadius { get; set; }
-
-    /// <summary>
-    /// Initializes a new input location message content
-    /// </summary>
-    /// <param name="latitude">The latitude of the location</param>
-    /// <param name="longitude">The longitude of the location</param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public InputLocationMessageContent(double latitude, double longitude)
-    {
-        Latitude = latitude;
-        Longitude = longitude;
-    }
-
-    /// <summary>
-    /// Initializes a new input location message content
-    /// </summary>
-    public InputLocationMessageContent()
-    { }
 }

@@ -26,7 +26,12 @@ public class PublicPollTests(PublicPollTestsFixture classFixture) : IClassFixtur
             {
                 ChatId = Fixture.SupergroupChat,
                 Question = "Pick your team",
-                Options = ["Aragorn", "Galadriel", "Frodo"],
+                Options =
+                [
+                    new InputPollOption { Text = "Aragorn" },
+                    new InputPollOption { Text = "Galadriel" },
+                    new InputPollOption { Text = "Frodo" },
+                ],
                 IsAnonymous = false,
                 Type = PollType.Regular,
                 AllowsMultipleAnswers = true,

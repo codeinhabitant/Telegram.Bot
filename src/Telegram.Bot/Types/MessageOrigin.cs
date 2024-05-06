@@ -1,4 +1,3 @@
-using Telegram.Bot.Serialization;
 using Telegram.Bot.Types.Enums;
 
 namespace Telegram.Bot.Types;
@@ -12,18 +11,13 @@ namespace Telegram.Bot.Types;
 /// <item><see cref="MessageOriginChannel"/></item>
 /// </list>
 /// </summary>
-[CustomJsonPolymorphic("type")]
-[CustomJsonDerivedType(typeof(MessageOriginUser), "user")]
-[CustomJsonDerivedType(typeof(MessageOriginHiddenUser), "hidden_user")]
-[CustomJsonDerivedType(typeof(MessageOriginChat), "chat")]
-[CustomJsonDerivedType(typeof(MessageOriginChannel), "channel")]
 public abstract class MessageOrigin
 {
     /// <summary>
     /// Type of the message origin
     /// </summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
-    public abstract MessageOriginType Type { get; }
+    public abstract MessageOriginType? Type { get; }
 
     /// <summary>
     /// Date the message was sent originally
@@ -34,6 +28,20 @@ public abstract class MessageOrigin
     public DateTime Date { get; set; }
 }
 
+public class MessageOriginFallbackUnsupported : MessageOrigin
+{
+    /// <inheritdoc />
+    [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
+    public override MessageOriginType? Type => MessageOriginType.FallbackUnsupported;
+
+    private MessageOriginFallbackUnsupported() {}
+
+    /// <summary>
+    /// For optimization purposes, use this instance instead of creating a new one.
+    /// </summary>
+    public static MessageOriginFallbackUnsupported Instance { get; } = new();
+}
+
 /// <summary>
 /// The message was originally sent by a known user.
 /// </summary>
@@ -42,7 +50,8 @@ public class MessageOriginUser : MessageOrigin
     /// <summary>
     /// Type of the message origin, always <see cref="MessageOriginType.User"/>
     /// </summary>
-    public override MessageOriginType Type => MessageOriginType.User;
+    [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
+    public override MessageOriginType? Type => MessageOriginType.User;
 
     /// <summary>
     /// User that sent the message originally
@@ -60,7 +69,7 @@ public class MessageOriginHiddenUser : MessageOrigin
     /// <summary>
     /// Type of the message origin, always <see cref="MessageOriginType.HiddenUser"/>
     /// </summary>
-    public override MessageOriginType Type => MessageOriginType.HiddenUser;
+    public override MessageOriginType? Type => MessageOriginType.HiddenUser;
 
     /// <summary>
     /// Name of the user that sent the message originally
@@ -78,7 +87,7 @@ public class MessageOriginChat : MessageOrigin
     /// <summary>
     /// Type of the message origin, always <see cref="MessageOriginType.Chat"/>
     /// </summary>
-    public override MessageOriginType Type => MessageOriginType.Chat;
+    public override MessageOriginType? Type => MessageOriginType.Chat;
 
     /// <summary>
     /// Chat that sent the message originally
@@ -104,7 +113,7 @@ public class MessageOriginChannel : MessageOrigin
     /// <summary>
     /// Type of the message origin, always <see cref="MessageOriginType.Channel"/>
     /// </summary>
-    public override MessageOriginType Type => MessageOriginType.Channel;
+    public override MessageOriginType? Type => MessageOriginType.Channel;
 
     /// <summary>
     /// Channel chat to which the message was originally sent

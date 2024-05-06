@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Telegram.Bot.Requests.Abstractions;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
@@ -84,53 +83,10 @@ public class CopyMessageRequest : RequestBase<MessageId>, IChatTargetable
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public IReplyMarkup? ReplyMarkup { get; set; }
 
-    /// <inheritdoc cref="Abstractions.Documentation.ReplyToMessageId"/>
-    [Obsolete($"This property is deprecated, use {nameof(ReplyParameters)} instead")]
-    [JsonIgnore]
-    public int? ReplyToMessageId
-    {
-        get => ReplyParameters?.MessageId;
-        set
-        {
-            if (value is null)
-            {
-                ReplyParameters = null;
-            }
-            else
-            {
-                ReplyParameters ??= new();
-                ReplyParameters.MessageId = value.Value;
-            }
-        }
-    }
-
-    /// <summary>
-    /// Initializes a new request with chatId, fromChatId and messageId
-    /// </summary>
-    /// <param name="chatId">Unique identifier for the target chat or username of the target channel
-    /// (in the format <c>@channelusername</c>)
-    /// </param>
-    /// <param name="fromChatId">
-    /// Unique identifier for the chat where the original message was sent
-    /// (or channel username in the format <c>@channelusername</c>)
-    /// </param>
-    /// <param name="messageId">
-    /// Message identifier in the chat specified in <see cref="FromChatId"/>
-    /// </param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public CopyMessageRequest(ChatId chatId, ChatId fromChatId, int messageId)
-        : this()
-    {
-        ChatId = chatId;
-        FromChatId = fromChatId;
-        MessageId = messageId;
-    }
-
     /// <summary>
     /// Initializes a new request
     /// </summary>
     public CopyMessageRequest()
-        : base("copyMessage")
+        : base("copyMessage", TelegramBotClientJsonSerializerContext.Instance.CopyMessageRequest)
     { }
 }

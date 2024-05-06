@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Telegram.Bot.Requests.Abstractions;
 using Telegram.Bot.Types.ReplyMarkups;
 
@@ -21,21 +20,9 @@ public class EditInlineMessageReplyMarkupRequest : RequestBase<bool>
     public InlineKeyboardMarkup? ReplyMarkup { get; set; }
 
     /// <summary>
-    /// Initializes a new request with inlineMessageId and new inline keyboard
-    /// </summary>
-    /// <param name="inlineMessageId">Identifier of the inline message</param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public EditInlineMessageReplyMarkupRequest(string inlineMessageId)
-        : this()
-    {
-        InlineMessageId = inlineMessageId;
-    }
-
-    /// <summary>
     /// Initializes a new request
     /// </summary>
     public EditInlineMessageReplyMarkupRequest()
-        : base("editMessageReplyMarkup")
+        : base("editMessageReplyMarkup", TelegramBotClientJsonSerializerContext.Instance.EditInlineMessageReplyMarkupRequest)
     { }
 }

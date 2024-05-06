@@ -1,3 +1,5 @@
+using Telegram.Bot.Serialization.EnumConverters;
+
 namespace Telegram.Bot.Types.Enums;
 
 /// <summary>
@@ -6,6 +8,11 @@ namespace Telegram.Bot.Types.Enums;
 [JsonConverter(typeof(StickerFormatConverter))]
 public enum StickerFormat
 {
+    /// <summary>
+    /// Represents of a new unsupported type.
+    /// </summary>
+    FallbackUnsupported = 0,
+
     /// <summary>
     /// Static <see cref="Sticker"/>
     /// </summary>

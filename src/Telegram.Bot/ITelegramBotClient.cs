@@ -1,9 +1,11 @@
 using System.IO;
+using System.Text.Json.Serialization.Metadata;
 using System.Threading;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Telegram.Bot.Args;
 using Telegram.Bot.Exceptions;
+using Telegram.Bot.Requests;
 using Telegram.Bot.Requests.Abstractions;
 
 namespace Telegram.Bot;
@@ -54,10 +56,12 @@ public interface ITelegramBotClient
     /// </summary>
     /// <typeparam name="TResponse">Type of expected result in the response object</typeparam>
     /// <param name="request">API request object</param>
+    /// <param name="serializerContext"></param>
     /// <param name="cancellationToken"></param>
     /// <returns>Result of the API request</returns>
     Task<TResponse> MakeRequestAsync<TResponse>(
         IRequest<TResponse> request,
+        JsonTypeInfo<ApiResponse<TResponse>> serializerContext,
         CancellationToken cancellationToken = default
     );
 
@@ -70,7 +74,7 @@ public interface ITelegramBotClient
 
     /// <summary>
     /// Use this method to download a file. Get <paramref name="filePath"/> by calling
-    /// <see cref="TelegramBotClientExtensions.GetFileAsync(ITelegramBotClient, string, CancellationToken)"/>
+    /// <see cref="TelegramBotClientExtensions.GetFileAsync(ITelegramBotClient, GetFileRequest, CancellationToken)"/>
     /// </summary>
     /// <param name="filePath">Path to file on server</param>
     /// <param name="destination">Destination stream to write file to</param>

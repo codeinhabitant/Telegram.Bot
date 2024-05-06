@@ -1,3 +1,5 @@
+using Telegram.Bot.Serialization.EnumConverters;
+
 namespace Telegram.Bot.Types.Enums;
 
 /// <summary>
@@ -6,6 +8,11 @@ namespace Telegram.Bot.Types.Enums;
 [JsonConverter(typeof(ChatTypeConverter))]
 public enum ChatType
 {
+    /// <summary>
+    /// Represents of a new unsupported type.
+    /// </summary>
+    FallbackUnsupported = 0,
+
     /// <summary>
     /// Normal one to one <see cref="Chat"/>
     /// </summary>

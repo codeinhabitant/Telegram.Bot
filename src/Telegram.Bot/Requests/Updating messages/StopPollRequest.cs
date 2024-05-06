@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Telegram.Bot.Requests.Abstractions;
 using Telegram.Bot.Types.ReplyMarkups;
 
@@ -30,26 +29,9 @@ public class StopPollRequest : RequestBase<Poll>, IChatTargetable
     public InlineKeyboardMarkup? ReplyMarkup { get; set; }
 
     /// <summary>
-    /// Initializes a new request with chatId, messageId
-    /// </summary>
-    /// <param name="chatId">
-    /// Unique identifier for the target chat or username of the target channel (in the format
-    /// <c>@channelusername</c>)
-    /// </param>
-    /// <param name="messageId">Identifier of the original message with the poll</param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public StopPollRequest(ChatId chatId, int messageId)
-        : this()
-    {
-        ChatId = chatId;
-        MessageId = messageId;
-    }
-
-    /// <summary>
     /// Initializes a new request
     /// </summary>
     public StopPollRequest()
-        : base("stopPoll")
+        : base("stopPoll", TelegramBotClientJsonSerializerContext.Instance.StopPollRequest)
     { }
 }

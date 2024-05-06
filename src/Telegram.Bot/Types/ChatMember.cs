@@ -1,4 +1,3 @@
-using Telegram.Bot.Serialization;
 using Telegram.Bot.Types.Enums;
 
 namespace Telegram.Bot.Types;
@@ -6,20 +5,13 @@ namespace Telegram.Bot.Types;
 /// <summary>
 /// This object contains information about one member of the chat.
 /// </summary>
-[CustomJsonPolymorphic("status")]
-[CustomJsonDerivedType(typeof(ChatMemberAdministrator), "administrator")]
-[CustomJsonDerivedType(typeof(ChatMemberBanned), "kicked")]
-[CustomJsonDerivedType(typeof(ChatMemberLeft), "left")]
-[CustomJsonDerivedType(typeof(ChatMemberMember), "member")]
-[CustomJsonDerivedType(typeof(ChatMemberOwner), "creator")]
-[CustomJsonDerivedType(typeof(ChatMemberRestricted), "restricted")]
 public abstract class ChatMember
 {
     /// <summary>
     /// The member's status in the chat.
     /// </summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
-    public abstract ChatMemberStatus Status { get; }
+    public abstract ChatMemberStatus? Status { get; }
 
     /// <summary>
     /// Information about the user
@@ -29,13 +21,27 @@ public abstract class ChatMember
     public User User { get; set; } = default!;
 }
 
+public class ChatMemberFallbackUnsupported : ChatMember
+{
+    /// <inheritdoc />
+    [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
+    public override ChatMemberStatus? Status => ChatMemberStatus.FallbackUnsupported;
+
+    private ChatMemberFallbackUnsupported() {}
+
+    /// <summary>
+    /// For optimization purposes, use this instance instead of creating a new one.
+    /// </summary>
+    public static ChatMemberFallbackUnsupported Instance { get; } = new();
+}
+
 /// <summary>
 /// Represents a <see cref="ChatMember"/> that owns the chat and has all administrator privileges
 /// </summary>
 public class ChatMemberOwner : ChatMember
 {
     /// <inheritdoc />
-    public override ChatMemberStatus Status => ChatMemberStatus.Creator;
+    public override ChatMemberStatus? Status => ChatMemberStatus.Creator;
 
     /// <summary>
     /// Custom title for this user
@@ -58,7 +64,7 @@ public class ChatMemberOwner : ChatMember
 public class ChatMemberAdministrator : ChatMember
 {
     /// <inheritdoc />
-    public override ChatMemberStatus Status => ChatMemberStatus.Administrator;
+    public override ChatMemberStatus? Status => ChatMemberStatus.Administrator;
 
     /// <summary>
     /// <see langword="true"/>, if the bot is allowed to edit administrator privileges of that user
@@ -191,7 +197,7 @@ public class ChatMemberAdministrator : ChatMember
 public class ChatMemberMember : ChatMember
 {
     /// <inheritdoc />
-    public override ChatMemberStatus Status => ChatMemberStatus.Member;
+    public override ChatMemberStatus? Status => ChatMemberStatus.Member;
 }
 
 /// <summary>
@@ -200,7 +206,7 @@ public class ChatMemberMember : ChatMember
 public class ChatMemberRestricted : ChatMember
 {
     /// <inheritdoc />
-    public override ChatMemberStatus Status => ChatMemberStatus.Restricted;
+    public override ChatMemberStatus? Status => ChatMemberStatus.Restricted;
 
     /// <summary>
     /// <see langword="true"/>, if the user is a member of the chat at the moment of the request
@@ -323,7 +329,7 @@ public class ChatMemberRestricted : ChatMember
 public class ChatMemberLeft : ChatMember
 {
     /// <inheritdoc />
-    public override ChatMemberStatus Status => ChatMemberStatus.Left;
+    public override ChatMemberStatus? Status => ChatMemberStatus.Left;
 }
 
 /// <summary>
@@ -333,7 +339,7 @@ public class ChatMemberLeft : ChatMember
 public class ChatMemberBanned : ChatMember
 {
     /// <inheritdoc />
-    public override ChatMemberStatus Status => ChatMemberStatus.Kicked;
+    public override ChatMemberStatus? Status => ChatMemberStatus.Kicked;
 
     /// <summary>
     /// Date when restrictions will be lifted for this user, UTC time

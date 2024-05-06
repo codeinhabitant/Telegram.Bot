@@ -83,55 +83,6 @@ public class Message : MaybeInaccessibleMessage
     public Chat Chat { get; set; } = default!;
 
     /// <summary>
-    /// Optional. For forwarded messages, sender of the original message
-    /// </summary>
-    [JsonIgnore]
-    [Obsolete($"This property is deprecated, use {nameof(ForwardOrigin)} property")]
-    public User? ForwardFrom => (ForwardOrigin as MessageOriginUser)?.SenderUser;
-
-    /// <summary>
-    /// Optional. For messages forwarded from channels or from anonymous administrators, information about the
-    /// original sender chat
-    /// </summary>
-    [JsonIgnore]
-    [Obsolete($"This property is deprecated, use {nameof(ForwardOrigin)} property")]
-    public Chat? ForwardFromChat => ForwardOrigin switch
-    {
-        MessageOriginChannel originChannel => originChannel.Chat,
-        MessageOriginChat originChat => originChat.SenderChat,
-        _ => null,
-    };
-
-    /// <summary>
-    /// Optional. For messages forwarded from channels, identifier of the original message in the channel
-    /// </summary>
-    [JsonIgnore]
-    [Obsolete($"This property is deprecated, use {nameof(ForwardOrigin)} property")]
-    public int? ForwardFromMessageId => (ForwardOrigin as MessageOriginChannel)?.MessageId;
-
-    /// <summary>
-    /// Optional. For messages forwarded from channels, signature of the post author if present
-    /// </summary>
-    [JsonIgnore]
-    [Obsolete($"This property is deprecated, use {nameof(ForwardOrigin)} property")]
-    public string? ForwardSignature => (ForwardOrigin as MessageOriginChannel)?.AuthorSignature;
-
-    /// <summary>
-    /// Optional. Sender's name for messages forwarded from users who disallow adding a link to their account in
-    /// forwarded messages
-    /// </summary>
-    [JsonIgnore]
-    [Obsolete($"This property is deprecated, use {nameof(ForwardOrigin)} property")]
-    public string? ForwardSenderName => (ForwardOrigin as MessageOriginHiddenUser)?.SenderUserName;
-
-    /// <summary>
-    /// Optional. For forwarded messages, date the original message was sent
-    /// </summary>
-    [JsonIgnore]
-    [Obsolete($"This property is deprecated, use {nameof(ForwardOrigin)} property")]
-    public DateTime? ForwardDate => ForwardOrigin?.Date;
-
-    /// <summary>
     ///Optional. Information about the original message for forwarded messages
     /// </summary>
     [JsonInclude]
@@ -517,14 +468,6 @@ public class Message : MaybeInaccessibleMessage
     public UsersShared? UsersShared { get; set; }
 
     /// <summary>
-    /// Optional. Service message: a user was shared with the bot
-    /// </summary>
-    [Obsolete($"This property is deprecated, use property {nameof(UsersShared)}")]
-    [JsonInclude]
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public UserShared? UserShared { get; set; }
-
-    /// <summary>
     /// Optional. Service message: a chat was shared with the bot
     /// </summary>
     [JsonInclude]
@@ -566,6 +509,13 @@ public class Message : MaybeInaccessibleMessage
     [JsonInclude]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public ChatBoostAdded? BoostAdded { get; set; }
+
+    /// <summary>
+    /// Optional. Service message: chat background set
+    /// </summary>
+    [JsonInclude]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public ChatBackground? ChatBackgroundSet { get; set; }
 
     /// <summary>
     /// Optional. Service message: forum topic created
@@ -721,13 +671,13 @@ public class Message : MaybeInaccessibleMessage
             { Invoice: not null }                       => MessageType.Invoice,
             { SuccessfulPayment: not null }             => MessageType.SuccessfulPayment,
             { UsersShared: not null }                   => MessageType.UsersShared,
-            { UserShared: not null }                    => MessageType.UserShared,
             { ChatShared: not null }                    => MessageType.ChatShared,
             { ConnectedWebsite: not null }              => MessageType.ConnectedWebsite,
             { WriteAccessAllowed: not null }            => MessageType.WriteAccessAllowed,
             { PassportData: not null }                  => MessageType.PassportData,
             { ProximityAlertTriggered: not null }       => MessageType.ProximityAlertTriggered,
             { BoostAdded: not null }                    => MessageType.BoostAdded,
+            { ChatBackgroundSet: not null }             => MessageType.ChatBackgroundSet,
             { ForumTopicCreated: not null }             => MessageType.ForumTopicCreated,
             { ForumTopicEdited: not null }              => MessageType.ForumTopicEdited,
             { ForumTopicClosed: not null }              => MessageType.ForumTopicClosed,
@@ -743,6 +693,6 @@ public class Message : MaybeInaccessibleMessage
             { VideoChatEnded: not null }                => MessageType.VideoChatEnded,
             { VideoChatParticipantsInvited: not null }  => MessageType.VideoChatParticipantsInvited,
             { WebAppData: not null }                    => MessageType.WebAppData,
-            _                                           => MessageType.Unknown
+            _                                           => MessageType.FallbackUnsupported
         };
 }

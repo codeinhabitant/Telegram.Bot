@@ -33,7 +33,7 @@ public class BotCommandsTests(TestsFixture fixture) : IAsyncLifetime
             }
         ];
 
-        _scope = BotCommandScope.Default();
+        _scope = new BotCommandScopeDefault();
 
         await BotClient.SetMyCommandsAsync(
             new SetMyCommandsRequest
@@ -62,7 +62,7 @@ public class BotCommandsTests(TestsFixture fixture) : IAsyncLifetime
             },
         ];
 
-        _scope = BotCommandScope.Default();
+        _scope = new BotCommandScopeDefault();
 
         await fixture.BotClient.SetMyCommandsAsync(
             new SetMyCommandsRequest
@@ -99,7 +99,7 @@ public class BotCommandsTests(TestsFixture fixture) : IAsyncLifetime
             }
         ];
 
-        _scope = BotCommandScope.Default();
+        _scope = new BotCommandScopeDefault();
 
         await BotClient.SetMyCommandsAsync(
             new SetMyCommandsRequest
@@ -142,7 +142,7 @@ public class BotCommandsTests(TestsFixture fixture) : IAsyncLifetime
             }
         ];
 
-        _scope = BotCommandScope.AllGroupChats();
+        _scope = new BotCommandScopeAllGroupChats();
 
         await BotClient.SetMyCommandsAsync(
             new SetMyCommandsRequest

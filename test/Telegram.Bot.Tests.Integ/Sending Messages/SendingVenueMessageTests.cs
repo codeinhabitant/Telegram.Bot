@@ -1,7 +1,6 @@
 ﻿using System.Text.Json;
 using System.Threading.Tasks;
 using Telegram.Bot.Requests;
-using Telegram.Bot.Serialization;
 using Telegram.Bot.Tests.Integ.Framework;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -63,9 +62,9 @@ public class SendingVenueMessageTests(TestsFixture fixture)
             }
             """;
 
-        SendVenueRequest request = JsonSerializer.Deserialize<SendVenueRequest>(json, JsonSerializerOptionsProvider.Options);
+        SendVenueRequest request = JsonSerializer.Deserialize(json, TelegramBotClientJsonSerializerContext.Instance.SendVenueRequest);
 
-        Message message = await BotClient.MakeRequestAsync(request);
+        Message message = await BotClient.MakeRequestAsync(request, TelegramBotClientJsonSerializerContext.Instance.ApiResponseMessage);
 
         Assert.Equal(MessageType.Venue, message.Type);
         Assert.NotNull(message.Venue);

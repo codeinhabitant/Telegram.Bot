@@ -1,4 +1,4 @@
-using System.Diagnostics.CodeAnalysis;
+
 
 // ReSharper disable once CheckNamespace
 namespace Telegram.Bot.Types.InlineQueryResults;
@@ -82,27 +82,4 @@ public class InlineQueryResultLocation : InlineQueryResult
     [JsonInclude]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public int? ThumbnailHeight { get; set; }
-
-    /// <summary>
-    /// Initializes a new inline query result
-    /// </summary>
-    /// <param name="id">Unique identifier of this result</param>
-    /// <param name="latitude">Latitude of the location in degrees</param>
-    /// <param name="longitude">Longitude of the location in degrees</param>
-    /// <param name="title">Title of the result</param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public InlineQueryResultLocation(string id, double latitude, double longitude, string title)
-        : base(id)
-    {
-        Latitude = latitude;
-        Longitude = longitude;
-        Title = title;
-    }
-
-    /// <summary>
-    /// Initializes a new inline query result
-    /// </summary>
-    public InlineQueryResultLocation()
-    { }
 }

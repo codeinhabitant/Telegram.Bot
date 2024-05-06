@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Telegram.Bot.Requests.Abstractions;
 using Telegram.Bot.Types.ReplyMarkups;
 
@@ -31,24 +30,7 @@ public class EditMessageReplyMarkupRequest : RequestBase<Message>, IChatTargetab
     /// <summary>
     /// Initializes a new request with chatId and messageId
     /// </summary>
-    /// <param name="chatId">
-    /// Unique identifier for the target chat or username of the target channel
-    /// (in the format <c>@channelusername</c>)
-    /// </param>
-    /// <param name="messageId">Identifier of the message to edit</param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public EditMessageReplyMarkupRequest(ChatId chatId, int messageId)
-        : this()
-    {
-        ChatId = chatId;
-        MessageId = messageId;
-    }
-
-    /// <summary>
-    /// Initializes a new request with chatId and messageId
-    /// </summary>
     public EditMessageReplyMarkupRequest()
-        : base("editMessageReplyMarkup")
+        : base("editMessageReplyMarkup", TelegramBotClientJsonSerializerContext.Instance.EditMessageReplyMarkupRequest)
     { }
 }

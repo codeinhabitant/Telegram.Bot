@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Telegram.Bot.Requests.Abstractions;
+﻿using Telegram.Bot.Requests.Abstractions;
 
 // ReSharper disable once CheckNamespace
 namespace Telegram.Bot.Requests;
@@ -45,25 +44,9 @@ public class SetInlineGameScoreRequest : RequestBase<bool>, IUserTargetable
     public required string InlineMessageId { get; init; }
 
     /// <summary>
-    /// Initializes a new request with userId, inlineMessageId and new score
-    /// </summary>
-    /// <param name="userId">User identifier</param>
-    /// <param name="score">New score, must be non-negative</param>
-    /// <param name="inlineMessageId">Identifier of the inline message</param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public SetInlineGameScoreRequest(long userId, int score, string inlineMessageId)
-        : this()
-    {
-        UserId = userId;
-        Score = score;
-        InlineMessageId = inlineMessageId;
-    }
-
-    /// <summary>
     /// Initializes a new request
     /// </summary>
     public SetInlineGameScoreRequest()
-        : base("setGameScore")
+        : base("setGameScore", TelegramBotClientJsonSerializerContext.Instance.SetInlineGameScoreRequest)
     { }
 }

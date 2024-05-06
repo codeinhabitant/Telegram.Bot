@@ -26,7 +26,12 @@ public class QuizPollTests(QuizPollTestsFixture classFixture) : IClassFixture<Qu
             {
                 ChatId = Fixture.SupergroupChat,
                 Question = "How many silmarils were made in J. R. R. Tolkiens's Silmarillion?",
-                Options = ["One", "Ten", "Three"],
+                Options =
+                [
+                    new InputPollOption { Text = "One" },
+                    new InputPollOption { Text = "Ten" },
+                    new InputPollOption { Text = "Three" },
+                ],
                 IsAnonymous = false,
                 Type = PollType.Quiz,
                 CorrectOptionId = 2, // "Three",

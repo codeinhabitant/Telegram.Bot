@@ -1,4 +1,4 @@
-using System.Diagnostics.CodeAnalysis;
+
 
 // ReSharper disable once CheckNamespace
 namespace Telegram.Bot.Requests;
@@ -18,23 +18,9 @@ public class DeleteStickerSetRequest : RequestBase<bool>
     public required string Name { get; init; }
 
     /// <summary>
-    /// Initializes a new request with name
-    /// </summary>
-    /// <param name="name">
-    /// Sticker set name
-    /// </param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public DeleteStickerSetRequest(string name)
-        : this()
-    {
-        Name = name;
-    }
-
-    /// <summary>
     /// Initializes a new request
     /// </summary>
     public DeleteStickerSetRequest()
-        : base("deleteStickerSet")
+        : base("deleteStickerSet", TelegramBotClientJsonSerializerContext.Instance.DeleteStickerSetRequest)
     { }
 }

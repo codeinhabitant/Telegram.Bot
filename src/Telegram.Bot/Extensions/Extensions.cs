@@ -5,10 +5,18 @@ namespace Telegram.Bot.Extensions;
 /// <summary>
 /// Extension Methods
 /// </summary>
-internal static class ObjectExtensions
+public static class ObjectExtensions
 {
+    /// <summary>
+    /// Throws <see cref="ArgumentNullException"/> if <paramref name="value"/> is null
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="parameterName"></param>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static T ThrowIfNull<T>(
+    public static T ThrowIfNull<T>(
         this T? value,
         [CallerArgumentExpression(nameof(value))] string? parameterName = default
     ) =>

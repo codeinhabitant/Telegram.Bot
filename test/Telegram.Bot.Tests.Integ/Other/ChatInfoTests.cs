@@ -11,7 +11,7 @@ namespace Telegram.Bot.Tests.Integ.Other;
 
 [Collection(Constants.TestCollections.ChatInfo)]
 [TestCaseOrderer(Constants.TestCaseOrderer, Constants.AssemblyName)]
-public class ChatInfoTests(TestsFixture fixture)
+public class ChatTests(TestsFixture fixture)
 {
     ITelegramBotClient BotClient => fixture.BotClient;
 
@@ -21,7 +21,7 @@ public class ChatInfoTests(TestsFixture fixture)
     {
         Chat supergroupChat = fixture.SupergroupChat;
 
-        Chat chat = await BotClient.GetChatAsync(
+        ChatFullInfo chat = await BotClient.GetChatAsync(
             new GetChatRequest
             {
                 ChatId = supergroupChat.Id,
@@ -32,13 +32,13 @@ public class ChatInfoTests(TestsFixture fixture)
         Assert.Equal(supergroupChat.Id, chat.Id);
         Assert.Equal(supergroupChat.Title, chat.Title);
         Assert.Equal(supergroupChat.Username, chat.Username);
-        Assert.Equal(supergroupChat.Description, chat.Description);
+        // [todo] Assert.Equal(supergroupChat.Description, chat.Description);
         // Don't compare invite links, it's easy to invalidate them accidentally so the test
         // fails for no good reason
         // Assert.Equal(supergroupChat.InviteLink, chat.InviteLink);
-        Assert.Equal(supergroupChat.PinnedMessage, chat.PinnedMessage);
-        Assert.Equal(supergroupChat.StickerSetName, chat.StickerSetName);
-        Assert.Equal(supergroupChat.CanSetStickerSet, chat.CanSetStickerSet);
+        // [todo] Assert.Equal(supergroupChat.PinnedMessage, chat.PinnedMessage);
+        // [todo] Assert.Equal(supergroupChat.StickerSetName, chat.StickerSetName);
+        // [todo] Assert.Equal(supergroupChat.CanSetStickerSet, chat.CanSetStickerSet);
         Assert.Null(chat.FirstName);
         Assert.Null(chat.LastName);
         Assert.NotNull(chat.Permissions);
@@ -97,7 +97,7 @@ public class ChatInfoTests(TestsFixture fixture)
     [OrderedFact("Should get private chat info")]
     [Trait(Constants.MethodTraitName, Constants.TelegramBotApiMethods.GetChatAdministrators)]
     [Trait(Constants.MethodTraitName, Constants.TelegramBotApiMethods.GetChat)]
-    public async Task Should_Get_Private_Chat()
+    public async Task Should_Get_Private_ChatFullInfo()
     {
         long privateChatId;
         {
@@ -112,7 +112,7 @@ public class ChatInfoTests(TestsFixture fixture)
                 .User.Id;
         }
 
-        Chat chat = await BotClient.GetChatAsync(
+        ChatFullInfo chat = await BotClient.GetChatAsync(
             new GetChatRequest { ChatId = privateChatId, }
         );
 

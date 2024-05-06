@@ -1,4 +1,4 @@
-
+using Telegram.Bot.Serialization.EnumConverters;
 
 // ReSharper disable once CheckNamespace
 namespace Telegram.Bot.Types.InlineQueryResults;
@@ -9,6 +9,11 @@ namespace Telegram.Bot.Types.InlineQueryResults;
 [JsonConverter(typeof(InlineQueryResultTypeConverter))]
 public enum InlineQueryResultType
 {
+    /// <summary>
+    /// Represents of a new unsupported type.
+    /// </summary>
+    FallbackUnsupported = 0,
+
     /// <summary>
     /// <see cref="InlineQueryResultArticle"/>
     /// </summary>

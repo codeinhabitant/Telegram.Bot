@@ -1,5 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-using Telegram.Bot.Serialization;
 using Telegram.Bot.Types.Enums;
 
 // ReSharper disable once CheckNamespace
@@ -8,12 +6,6 @@ namespace Telegram.Bot.Types;
 /// <summary>
 /// This object represents the content of a media message to be sent
 /// </summary>
-[CustomJsonPolymorphic("type")]
-[CustomJsonDerivedType(typeof(InputMediaAnimation), "animation")]
-[CustomJsonDerivedType(typeof(InputMediaAudio), "audio")]
-[CustomJsonDerivedType(typeof(InputMediaDocument), "document")]
-[CustomJsonDerivedType(typeof(InputMediaPhoto), "photo")]
-[CustomJsonDerivedType(typeof(InputMediaVideo), "video")]
 public abstract class InputMedia
 {
     /// <summary>
@@ -52,14 +44,6 @@ public abstract class InputMedia
     [JsonInclude]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public ParseMode? ParseMode { get; set; }
-
-    /// <summary>
-    /// Initialize an object
-    /// </summary>
-    /// <param name="media">File to send</param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    protected InputMedia(InputFile media) => Media = media;
 
     /// <summary>
     /// Initialize an object

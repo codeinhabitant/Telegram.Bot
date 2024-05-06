@@ -1,4 +1,6 @@
-﻿namespace Telegram.Bot.Types.Enums;
+﻿using Telegram.Bot.Serialization.EnumConverters;
+
+namespace Telegram.Bot.Types.Enums;
 
 /// <summary>
 /// Type of the input media
@@ -6,6 +8,11 @@
 [JsonConverter(typeof(InputMediaTypeConverter))]
 public enum InputMediaType
 {
+    /// <summary>
+    /// Represents of a new unsupported type.
+    /// </summary>
+    FallbackUnsupported = 0,
+
     /// <summary>
     /// Photo
     /// </summary>

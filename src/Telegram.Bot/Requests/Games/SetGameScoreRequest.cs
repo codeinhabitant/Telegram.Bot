@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Telegram.Bot.Requests.Abstractions;
+﻿using Telegram.Bot.Requests.Abstractions;
 
 // ReSharper disable once CheckNamespace
 namespace Telegram.Bot.Requests;
@@ -56,28 +55,10 @@ public class SetGameScoreRequest : RequestBase<Message>, IUserTargetable, IChatT
     [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
     public required int MessageId { get; init; }
 
-    /// <summary>
-    /// Initializes a new request
-    /// </summary>
-    /// <param name="userId">User identifier</param>
-    /// <param name="score">New score, must be non-negative</param>
-    /// <param name="chatId">Unique identifier for the target chat</param>
-    /// <param name="messageId">Identifier of the sent message</param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public SetGameScoreRequest(long userId, int score, long chatId, int messageId)
-        : this()
-    {
-        UserId = userId;
-        Score = score;
-        ChatId = chatId;
-        MessageId = messageId;
-    }
-
-    /// <summary>
+ // <summary>
     /// Initializes a new request
     /// </summary>
     public SetGameScoreRequest()
-        : base("setGameScore")
+        : base("setGameScore", TelegramBotClientJsonSerializerContext.Instance.SetGameScoreRequest)
     { }
 }

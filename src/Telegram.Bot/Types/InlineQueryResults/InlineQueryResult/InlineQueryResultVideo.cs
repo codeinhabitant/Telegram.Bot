@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Telegram.Bot.Types.Enums;
 
 // ReSharper disable once CheckNamespace
@@ -102,38 +101,4 @@ public class InlineQueryResultVideo : InlineQueryResult
     [JsonInclude]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public InputMessageContent? InputMessageContent { get; set; }
-
-    /// <summary>
-    /// Initializes a new inline query result
-    /// </summary>
-    /// <param name="id">Unique identifier of this result</param>
-    /// <param name="videoUrl">A valid URL for the embedded video player</param>
-    /// <param name="thumbnailUrl">Url of the thumbnail for the result</param>
-    /// <param name="title">Title of the result</param>
-    /// <param name="inputMessageContent">
-    /// Content of the message to be sent instead of the video. This field is <b>required</b> if
-    /// <see cref="InlineQueryResultVideo"/> is used to send an HTML-page as a result
-    /// (e.g., a YouTube video).
-    /// </param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public InlineQueryResultVideo(
-        string id,
-        string videoUrl,
-        string thumbnailUrl,
-        string title,
-        InputMessageContent? inputMessageContent = default) : base(id)
-    {
-        VideoUrl = videoUrl;
-        MimeType = inputMessageContent is null ? "video/mp4" : "text/html";
-        ThumbnailUrl = thumbnailUrl;
-        Title = title;
-        InputMessageContent = inputMessageContent;
-    }
-
-    /// <summary>
-    /// Initializes a new inline query result
-    /// </summary>
-    public InlineQueryResultVideo()
-    { }
 }

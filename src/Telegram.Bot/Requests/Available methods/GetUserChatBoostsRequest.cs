@@ -1,5 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-
 // ReSharper disable once CheckNamespace
 namespace Telegram.Bot.Requests;
 
@@ -28,22 +26,6 @@ public class GetUserChatBoostsRequest : RequestBase<UserChatBoosts>
     /// Initializes a new request
     /// </summary>
     public GetUserChatBoostsRequest()
-        : base("getUserChatBoosts")
+        : base("getUserChatBoosts", TelegramBotClientJsonSerializerContext.Instance.GetUserChatBoostsRequest)
     { }
-
-    /// <summary>
-    /// Initializes a new request with chatId and userId
-    /// </summary>
-    /// <param name="chatId">
-    /// Unique identifier for the chat or username of the channel (in the format <c>@channelusername</c>)
-    /// </param>
-    /// <param name="userId">Unique identifier of the target user</param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public GetUserChatBoostsRequest(ChatId chatId, long userId)
-        : this()
-    {
-        ChatId = chatId;
-        UserId = userId;
-    }
 }

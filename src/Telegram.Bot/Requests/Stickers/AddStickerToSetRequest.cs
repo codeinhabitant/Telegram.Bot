@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using Telegram.Bot.Requests.Abstractions;
 
@@ -44,36 +43,10 @@ public class AddStickerToSetRequest : FileRequestBase<bool>, IUserTargetable
     public required InputSticker Sticker { get; init; }
 
     /// <summary>
-    /// Initializes a new request with userId, name and sticker
-    /// </summary>
-    /// <param name="userId">
-    /// User identifier
-    /// </param>
-    /// <param name="name">
-    /// Sticker set name
-    /// </param>
-    /// <param name="sticker">
-    /// An object with information about the added sticker.
-    /// If exactly the same sticker had already been added to the set, then the set isn't changed.
-    /// </param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public AddStickerToSetRequest(
-        long userId,
-        string name,
-        InputSticker sticker)
-        : this()
-    {
-        UserId = userId;
-        Name = name;
-        Sticker = sticker;
-    }
-
-    /// <summary>
     /// Initializes a new request
     /// </summary>
     public AddStickerToSetRequest()
-        : base("addStickerToSet")
+        : base("addStickerToSet", TelegramBotClientJsonSerializerContext.Instance.AddStickerToSetRequest)
     { }
 
     /// <inheritdoc />
@@ -81,7 +54,8 @@ public class AddStickerToSetRequest : FileRequestBase<bool>, IUserTargetable
         =>
         Sticker.Sticker switch
         {
-            InputFileStream sticker => ToMultipartFormDataContent(fileParameterName: sticker.FileName!, inputFile: sticker),
+            InputFileStream sticker =>
+                ToMultipartFormDataContent(TelegramBotClientJsonSerializerContext.Instance.AddStickerToSetRequest, fileParameterName: sticker.FileName!, inputFile: sticker),
             _                       => base.ToHttpContent()
         };
 }

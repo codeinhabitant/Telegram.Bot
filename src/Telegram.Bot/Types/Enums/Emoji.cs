@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Telegram.Bot.Serialization.EnumConverters;
 
 namespace Telegram.Bot.Types.Enums;
 
@@ -12,6 +13,11 @@ namespace Telegram.Bot.Types.Enums;
 [JsonConverter(typeof(EmojiConverter))]
 public enum Emoji
 {
+    /// <summary>
+    /// Represents of a new unsupported type.
+    /// </summary>
+    FallbackUnsupported = 0,
+
     /// <summary>
     /// Dice. Resulting value is 1-6
     /// </summary>

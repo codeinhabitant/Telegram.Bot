@@ -1,20 +1,24 @@
 using System.IO;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
+using System.Text.Json.Serialization.Metadata;
 using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot.Exceptions;
-using JsonSerializerOptionsProvider = Telegram.Bot.Serialization.JsonSerializerOptionsProvider;
 
 namespace Telegram.Bot.Extensions;
 
-internal static class HttpResponseMessageExtensions
+/// <summary>
+/// Extension Methods for <see cref="HttpResponseMessage"/>
+/// </summary>
+public static class HttpResponseMessageExtensions
 {
     /// <summary>
     /// Deserialize body from HttpContent into <typeparamref name="T"/>
     /// </summary>
     /// <param name="httpResponse"><see cref="HttpResponseMessage"/> instance</param>
     /// <param name="guard"></param>
+    /// <param name="context"></param>
     /// <param name="cancellationToken"></param>
     /// <typeparam name="T">Type of the resulting object</typeparam>
     /// <returns></returns>
@@ -22,9 +26,10 @@ internal static class HttpResponseMessageExtensions
     /// Thrown when body in the response can not be deserialized into <typeparamref name="T"/>
     /// </exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static async Task<T> DeserializeContentAsync<T>(
+    public static async Task<T> DeserializeContentAsync<T>(
         this HttpResponseMessage httpResponse,
         Func<T, bool> guard,
+        JsonTypeInfo<T> context,
         CancellationToken cancellationToken = default)
         where T : class
     {
@@ -45,17 +50,13 @@ internal static class HttpResponseMessageExtensions
             try
             {
                 contentStream = await httpResponse.Content
-#if NET6_0_OR_GREATER
                     .ReadAsStreamAsync(cancellationToken)
-#else
-                    .ReadAsStreamAsync()
-#endif
                     .ConfigureAwait(continueOnCapturedContext: false);
 
                 deserializedObject = await JsonSerializer
-                    .DeserializeAsync<T>(
+                    .DeserializeAsync(
                         utf8Json: contentStream,
-                        options: JsonSerializerOptionsProvider.Options,
+                        context,
                         cancellationToken: cancellationToken
                     ).ConfigureAwait(false);
             }
@@ -88,14 +89,10 @@ internal static class HttpResponseMessageExtensions
         }
         finally
         {
-#if NET6_0_OR_GREATER
             if (contentStream is not null)
             {
                 await contentStream.DisposeAsync().ConfigureAwait(false);
             }
-#else
-            contentStream?.Dispose();
-#endif
         }
     }
 

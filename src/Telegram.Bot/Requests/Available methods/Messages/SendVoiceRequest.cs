@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using Telegram.Bot.Requests.Abstractions;
 using Telegram.Bot.Types.Enums;
@@ -87,58 +86,19 @@ public class SendVoiceRequest : FileRequestBase<Message>, IChatTargetable, IBusi
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public IReplyMarkup? ReplyMarkup { get; set; }
 
-    /// <inheritdoc cref="Abstractions.Documentation.ReplyToMessageId"/>
-    [Obsolete($"This property is deprecated, use {nameof(ReplyParameters)} instead")]
-    [JsonIgnore]
-    public int? ReplyToMessageId
-    {
-        get => ReplyParameters?.MessageId;
-        set
-        {
-            if (value is null)
-            {
-                ReplyParameters = null;
-            }
-            else
-            {
-                ReplyParameters ??= new();
-                ReplyParameters.MessageId = value.Value;
-            }
-        }
-    }
-
-    /// <summary>
-    /// Initializes a new request with chatId and voice
-    /// </summary>
-    /// <param name="chatId">Unique identifier for the target chat or username of the target channel
-    /// (in the format <c>@channelusername</c>)
-    /// </param>
-    /// <param name="voice">
-    /// Audio file to send. Pass a <see cref="InputFileId"/> as String to send a file
-    /// that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram
-    /// to get a file from the Internet, or upload a new one using multipart/form-data
-    /// </param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public SendVoiceRequest(ChatId chatId, InputFile voice)
-        : this()
-    {
-        ChatId = chatId;
-        Voice = voice;
-    }
-
     /// <summary>
     /// Initializes a new request
     /// </summary>
     public SendVoiceRequest()
-        : base("sendVoice")
+        : base("sendVoice", TelegramBotClientJsonSerializerContext.Instance.SendVoiceRequest)
     { }
 
     /// <inheritdoc />
     public override HttpContent? ToHttpContent() =>
         Voice switch
         {
-            InputFileStream voice => ToMultipartFormDataContent(fileParameterName: "voice", inputFile: voice),
+            InputFileStream voice =>
+                ToMultipartFormDataContent(TelegramBotClientJsonSerializerContext.Instance.SendVoiceRequest, fileParameterName: "voice", inputFile: voice),
             _               => base.ToHttpContent()
         };
 }

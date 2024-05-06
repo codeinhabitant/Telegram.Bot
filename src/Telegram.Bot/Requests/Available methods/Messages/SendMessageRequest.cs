@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Telegram.Bot.Requests.Abstractions;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
@@ -73,61 +72,10 @@ public class SendMessageRequest : RequestBase<Message>, IChatTargetable, IBusine
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public IReplyMarkup? ReplyMarkup { get; set; }
 
-    /// <inheritdoc cref="Abstractions.Documentation.ReplyToMessageId"/>
-    [Obsolete($"This property is deprecated, use {nameof(ReplyParameters)} instead")]
-    [JsonIgnore]
-    public int? ReplyToMessageId
-    {
-        get => ReplyParameters?.MessageId;
-        set
-        {
-            if (value is null)
-            {
-                ReplyParameters = null;
-            }
-            else
-            {
-                ReplyParameters ??= new();
-                ReplyParameters.MessageId = value.Value;
-            }
-        }
-    }
-
-    /// <summary>
-    /// Disables link previews for links in this message
-    /// </summary>
-    [Obsolete($"This property is deprecated, use {nameof(LinkPreviewOptions)} instead")]
-    [JsonIgnore]
-    public bool? DisableWebPagePreview
-    {
-        get => LinkPreviewOptions?.IsDisabled;
-        set
-        {
-            LinkPreviewOptions ??= new();
-            LinkPreviewOptions.IsDisabled = value;
-        }
-    }
-
-    /// <summary>
-    /// Initializes a new request with chatId and text
-    /// </summary>
-    /// <param name="chatId">Unique identifier for the target chat or username of the target channel
-    /// (in the format <c>@channelusername</c>)
-    /// </param>
-    /// <param name="text">Text of the message to be sent, 1-4096 characters after entities parsing</param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public SendMessageRequest(ChatId chatId, string text)
-        : this()
-    {
-        ChatId = chatId;
-        Text = text;
-    }
-
     /// <summary>
     /// Initializes a new request
     /// </summary>
     public SendMessageRequest()
-        : base("sendMessage")
+        : base("sendMessage", TelegramBotClientJsonSerializerContext.Instance.SendMessageRequest)
     { }
 }

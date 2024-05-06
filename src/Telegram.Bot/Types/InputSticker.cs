@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Telegram.Bot.Types.Enums;
 
 namespace Telegram.Bot.Types;
@@ -52,30 +51,6 @@ public class InputSticker
     [JsonInclude]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public IEnumerable<string>? KeyWords { get; set; }
-
-    /// <summary>
-    /// Initializes a new input sticker to create or add sticker sets
-    /// with an <see cref="InputFile">sticker</see> and emojiList
-    /// </summary>
-    /// <param name="sticker">
-    /// The added sticker. Pass a file_id as a String to send a file that already exists
-    /// on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file
-    /// from the Internet, or upload a new one using multipart/form-data.
-    /// <see cref="StickerFormat.Animated">Animated</see> and <see cref="StickerFormat.Video">video</see>
-    /// stickers can't be uploaded via HTTP URL.
-    /// </param>
-    /// <param name="emojiList">
-    /// List of 1-20 emoji associated with the sticker
-    /// </param>
-    /// <param name="format">Format of the added sticker</param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor and required properties")]
-    public InputSticker(InputFile sticker, IEnumerable<string> emojiList, StickerFormat format)
-    {
-        Sticker = sticker;
-        EmojiList = emojiList;
-        Format = format;
-    }
 
     /// <summary>
     /// Initializes a new input sticker to create or add sticker sets

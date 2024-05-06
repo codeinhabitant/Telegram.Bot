@@ -9,6 +9,7 @@ namespace Telegram.Bot.Types;
 /// It is guaranteed that the link will be valid for at least 1 hour. When the link expires, a new one can be requested
 /// by calling <see cref="TelegramBotClientExtensions.GetFileAsync(ITelegramBotClient,GetFileRequest,CancellationToken)"/>.
 /// </summary>
+
 public class File : FileBase
 {
     /// <summary>

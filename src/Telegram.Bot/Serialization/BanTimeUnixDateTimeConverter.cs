@@ -1,7 +1,18 @@
 ﻿namespace Telegram.Bot.Serialization;
 
+/// <summary>
+/// Converts <see cref="DateTime"/> to its Unix timestamp representation and vice versa
+/// </summary>
 internal class BanTimeConverter : JsonConverter<DateTime?>
 {
+    /// <summary>
+    /// Determines whether the specified type can be converted.
+    /// </summary>
+    /// <param name="reader"></param>
+    /// <param name="typeToConvert"></param>
+    /// <param name="options"></param>
+    /// <returns></returns>
+    /// <exception cref="JsonException"></exception>
     public override DateTime? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         var underlyingType = Nullable.GetUnderlyingType(typeToConvert);
@@ -21,6 +32,12 @@ internal class BanTimeConverter : JsonConverter<DateTime?>
             : UnixDateTimeConverterUtil.Read(ref reader, typeToConvert, options);
     }
 
+    /// <summary>
+    /// Writes the JSON representation of the object.
+    /// </summary>
+    /// <param name="writer"></param>
+    /// <param name="value"></param>
+    /// <param name="options"></param>
     public override void Write(Utf8JsonWriter writer, DateTime? value, JsonSerializerOptions options)
     {
         if (value is null || value.Value == default)

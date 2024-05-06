@@ -1,6 +1,4 @@
-﻿using Telegram.Bot.Requests;
-using Telegram.Bot.Serialization;
-using Telegram.Bot.Types.Enums;
+﻿using Telegram.Bot.Types.Enums;
 
 namespace Telegram.Bot.Types;
 
@@ -14,17 +12,27 @@ namespace Telegram.Bot.Types;
 /// If a menu button other than MenuButtonDefault is set for a private chat, then it is applied in the chat.
 /// Otherwise the default menu button is applied. By default, the menu button opens the list of bot commands.
 /// </summary>
-[CustomJsonPolymorphic("type")]
-[CustomJsonDerivedType(typeof(MenuButtonDefault), "default")]
-[CustomJsonDerivedType(typeof(MenuButtonCommands), "commands")]
-[CustomJsonDerivedType(typeof(MenuButtonWebApp), "web_app")]
 public abstract class MenuButton
 {
     /// <summary>
     /// Type of the button
     /// </summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
-    public abstract MenuButtonType Type { get; }
+    public abstract MenuButtonType? Type { get; }
+}
+
+public class MenuButtonFallbackUnsupported : MenuButton
+{
+    /// <inheritdoc />
+    [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
+    public override MenuButtonType? Type => MenuButtonType.FallbackUnsupported;
+
+    private MenuButtonFallbackUnsupported() {}
+
+    /// <summary>
+    /// For optimization purposes, use this instance instead of creating a new one.
+    /// </summary>
+    public static MenuButtonFallbackUnsupported Instance { get; } = new();
 }
 
 /// <summary>
@@ -33,7 +41,7 @@ public abstract class MenuButton
 public class MenuButtonCommands : MenuButton
 {
     /// <inheritdoc />
-    public override MenuButtonType Type => MenuButtonType.Commands;
+    public override MenuButtonType? Type => MenuButtonType.Commands;
 }
 
 /// <summary>
@@ -42,7 +50,7 @@ public class MenuButtonCommands : MenuButton
 public class MenuButtonWebApp : MenuButton
 {
     /// <inheritdoc />
-    public override MenuButtonType Type => MenuButtonType.WebApp;
+    public override MenuButtonType? Type => MenuButtonType.WebApp;
 
     /// <summary>
     /// Text on the button
@@ -66,5 +74,5 @@ public class MenuButtonWebApp : MenuButton
 public class MenuButtonDefault : MenuButton
 {
     /// <inheritdoc />
-    public override MenuButtonType Type => MenuButtonType.Default;
+    public override MenuButtonType? Type => MenuButtonType.Default;
 }

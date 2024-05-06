@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using Telegram.Bot.Requests.Abstractions;
 
@@ -25,29 +24,13 @@ public class SetChatPhotoRequest : FileRequestBase<bool>, IChatTargetable
     public required InputFileStream Photo { get; init; }
 
     /// <summary>
-    /// Initializes a new request with chatId and photo
-    /// </summary>
-    /// <param name="chatId">Unique identifier for the target chat or username of the target channel
-    /// (in the format <c>@channelusername</c>)
-    /// </param>
-    /// <param name="photo">New chat photo, uploaded using multipart/form-data</param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public SetChatPhotoRequest(ChatId chatId, InputFileStream photo)
-        : this()
-    {
-        ChatId = chatId;
-        Photo = photo;
-    }
-
-    /// <summary>
     /// Initializes a new request
     /// </summary>
     public SetChatPhotoRequest()
-        : base("setChatPhoto")
+        : base("setChatPhoto", TelegramBotClientJsonSerializerContext.Instance.SetChatPhotoRequest)
     { }
 
     /// <inheritdoc />
     public override HttpContent ToHttpContent()
-        => ToMultipartFormDataContent("photo", Photo);
+        => ToMultipartFormDataContent(TelegramBotClientJsonSerializerContext.Instance.SetChatPhotoRequest, "photo", Photo);
 }

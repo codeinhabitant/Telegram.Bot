@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations;
+using Telegram.Bot.Serialization.EnumConverters;
 
 namespace Telegram.Bot.Types.Enums;
 
@@ -17,23 +17,25 @@ namespace Telegram.Bot.Types.Enums;
 public enum ParseMode
 {
     /// <summary>
+    /// Represents of a new unsupported type.
+    /// </summary>
+    FallbackUnsupported = 0,
+
+    /// <summary>
     /// Markdown-formatted A <see cref="Message.Text"/>
     /// </summary>
     /// <remarks>
     /// This is a legacy mode, retained for backward compatibility
     /// </remarks>
-    [Display(Name = "Markdown")]
     Markdown = 1,
 
     /// <summary>
     /// HTML-formatted <see cref="Message.Text"/>
     /// </summary>
-    [Display(Name = "Html")]
     Html,
 
     /// <summary>
     /// MarkdownV2-formatted <see cref="Message.Text"/>
     /// </summary>
-    [Display(Name = "MarkdownV2")]
     MarkdownV2,
 }

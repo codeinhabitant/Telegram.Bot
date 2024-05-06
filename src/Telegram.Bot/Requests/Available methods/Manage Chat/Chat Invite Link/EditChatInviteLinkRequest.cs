@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Telegram.Bot.Requests.Abstractions;
 using Telegram.Bot.Serialization;
 
@@ -56,25 +55,9 @@ public class EditChatInviteLinkRequest : RequestBase<ChatInviteLink>, IChatTarge
     public bool? CreatesJoinRequest { get; set; }
 
     /// <summary>
-    /// Initializes a new request with chatId and inviteLink
-    /// </summary>
-    /// <param name="chatId">Unique identifier for the target chat or username of the target channel
-    /// (in the format <c>@channelusername</c>)
-    /// </param>
-    /// <param name="inviteLink">The invite link to edit</param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public EditChatInviteLinkRequest(ChatId chatId, string inviteLink)
-        : this()
-    {
-        ChatId = chatId;
-        InviteLink = inviteLink;
-    }
-
-    /// <summary>
     /// Initializes a new request
     /// </summary>
     public EditChatInviteLinkRequest()
-        : base("editChatInviteLink")
+        : base("editChatInviteLink", TelegramBotClientJsonSerializerContext.Instance.EditChatInviteLinkRequest)
     { }
 }

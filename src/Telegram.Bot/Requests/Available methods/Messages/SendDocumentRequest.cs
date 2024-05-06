@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using Telegram.Bot.Extensions;
 using Telegram.Bot.Requests.Abstractions;
@@ -92,57 +91,17 @@ public class SendDocumentRequest : FileRequestBase<Message>, IChatTargetable, IB
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public IReplyMarkup? ReplyMarkup { get; set; }
 
-    /// <inheritdoc cref="Abstractions.Documentation.ReplyToMessageId"/>
-    [Obsolete($"This property is deprecated, use {nameof(ReplyParameters)} instead")]
-    [JsonIgnore]
-    public int? ReplyToMessageId
-    {
-        get => ReplyParameters?.MessageId;
-        set
-        {
-            if (value is null)
-            {
-                ReplyParameters = null;
-            }
-            else
-            {
-                ReplyParameters ??= new();
-                ReplyParameters.MessageId = value.Value;
-            }
-        }
-    }
-
-    /// <summary>
-    /// Initializes a new request with chatId and document
-    /// </summary>
-    /// <param name="chatId">Unique identifier for the target chat or username of the target channel
-    /// (in the format <c>@channelusername</c>)
-    /// </param>
-    /// <param name="document">
-    /// File to send. Pass a <see cref="InputFileId"/> as string to send a file that
-    /// exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram
-    /// to get a file from the Internet, or upload a new one using multipart/form-data
-    /// </param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public SendDocumentRequest(ChatId chatId, InputFile document)
-        : this()
-    {
-        ChatId = chatId;
-        Document = document;
-    }
-
     /// <summary>
     /// Initializes a new request
     /// </summary>
     public SendDocumentRequest()
-        : base("sendDocument")
+        : base("sendDocument", TelegramBotClientJsonSerializerContext.Instance.SendDocumentRequest)
     { }
 
     /// <inheritdoc />
     public override HttpContent? ToHttpContent() =>
         Document is InputFileStream || Thumbnail is InputFileStream
-            ? GenerateMultipartFormDataContent("document", "thumbnail")
+            ? GenerateMultipartFormDataContent(TelegramBotClientJsonSerializerContext.Instance.SendDocumentRequest, "document", "thumbnail")
                 .AddContentIfInputFile(media: Document, name: "document")
                 .AddContentIfInputFile(media: Thumbnail, name: "thumbnail")
             : base.ToHttpContent();

@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Telegram.Bot.Requests.Abstractions;
 using Telegram.Bot.Types.ReplyMarkups;
 
@@ -39,6 +38,17 @@ public class EditMessageLiveLocationRequest : RequestBase<Message>, IChatTargeta
     public required double Longitude { get; init; }
 
     /// <summary>
+    /// New period in seconds during which the location can be updated, starting from the message send date.
+    /// If 0x7FFFFFFF is specified, then the location can be updated forever.
+    /// Otherwise, the new value must not exceed the current live_period by more than a day,
+    /// and the live location expiration date must remain within the next 90 days.
+    /// If not specified, then live_period remains unchanged
+    /// </summary>
+    [JsonInclude]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public int? LivePeriod { get; set; }
+
+    /// <summary>
     /// The radius of uncertainty for the location, measured in meters; 0-1500
     /// </summary>
     [JsonInclude]
@@ -66,30 +76,9 @@ public class EditMessageLiveLocationRequest : RequestBase<Message>, IChatTargeta
     public InlineKeyboardMarkup? ReplyMarkup { get; set; }
 
     /// <summary>
-    /// Initializes a new request with chatId, messageId, latitude and longitude
-    /// </summary>
-    /// <param name="chatId">
-    /// Unique identifier for the target chat or username of the target channel
-    /// (in the format <c>@channelusername</c>)
-    /// </param>
-    /// <param name="messageId">Identifier of the message to edit</param>
-    /// <param name="latitude">Latitude of new location</param>
-    /// <param name="longitude">Longitude of new location</param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public EditMessageLiveLocationRequest(ChatId chatId, int messageId, double latitude, double longitude)
-        : this()
-    {
-        ChatId = chatId;
-        MessageId = messageId;
-        Latitude = latitude;
-        Longitude = longitude;
-    }
-
-    /// <summary>
     /// Initializes a new request
     /// </summary>
     public EditMessageLiveLocationRequest()
-        : base("editMessageLiveLocation")
+        : base("editMessageLiveLocation", TelegramBotClientJsonSerializerContext.Instance.EditMessageLiveLocationRequest)
     { }
 }

@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Telegram.Bot.Types.Enums;
 
 // ReSharper disable once CheckNamespace
@@ -80,29 +79,4 @@ public class InlineQueryResultDocument : InlineQueryResult
     [JsonInclude]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public int? ThumbnailHeight { get; set; }
-
-    /// <summary>
-    /// Initializes a new inline query result
-    /// </summary>
-    /// <param name="id">Unique identifier of this result</param>
-    /// <param name="documentUrl">A valid URL for the file</param>
-    /// <param name="title">Title of the result</param>
-    /// <param name="mimeType">
-    /// Mime type of the content of the file, either “application/pdf” or “application/zip”
-    /// </param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public InlineQueryResultDocument(string id, string documentUrl, string title, string mimeType)
-        : base(id)
-    {
-        DocumentUrl = documentUrl;
-        Title = title;
-        MimeType = mimeType;
-    }
-
-    /// <summary>
-    /// Initializes a new inline query result
-    /// </summary>
-    public InlineQueryResultDocument()
-    { }
 }

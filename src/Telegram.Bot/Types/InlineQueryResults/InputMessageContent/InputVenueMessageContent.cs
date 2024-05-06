@@ -1,5 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-
 // ReSharper disable once CheckNamespace
 namespace Telegram.Bot.Types.InlineQueryResults;
 
@@ -66,27 +64,4 @@ public class InputVenueMessageContent : InputMessageContent
     [JsonInclude]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? GooglePlaceType { get; set; }
-
-    /// <summary>
-    /// Initializes a new inline query result
-    /// </summary>
-    /// <param name="title">The name of the venue</param>
-    /// <param name="address">The address of the venue</param>
-    /// <param name="latitude">The latitude of the venue</param>
-    /// <param name="longitude">The longitude of the venue</param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public InputVenueMessageContent(string title, string address, double latitude, double longitude)
-    {
-        Title = title;
-        Address = address;
-        Latitude = latitude;
-        Longitude = longitude;
-    }
-
-    /// <summary>
-    /// Initializes a new inline query result
-    /// </summary>
-    public InputVenueMessageContent()
-    { }
 }

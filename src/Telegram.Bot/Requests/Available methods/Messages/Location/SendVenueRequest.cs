@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Telegram.Bot.Requests.Abstractions;
 using Telegram.Bot.Types.ReplyMarkups;
 
@@ -106,34 +105,8 @@ public class SendVenueRequest : RequestBase<Message>, IChatTargetable, IBusiness
     public IReplyMarkup? ReplyMarkup { get; set; }
 
     /// <summary>
-    /// Initializes a new request with chatId, location, venue title and address
-    /// </summary>
-    /// <param name="chatId">Unique identifier for the target chat or username of the target channel
-    /// (in the format <c>@channelusername</c>)
-    /// </param>
-    /// <param name="latitude">Latitude of the venue</param>
-    /// <param name="longitude">Longitude of the venue</param>
-    /// <param name="title">Name of the venue</param>
-    /// <param name="address">Address of the venue</param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public SendVenueRequest(
-        ChatId chatId,
-        double latitude,
-        double longitude,
-        string title,
-        string address) : this()
-    {
-        ChatId = chatId;
-        Latitude = latitude;
-        Longitude = longitude;
-        Title = title;
-        Address = address;
-    }
-
-    /// <summary>
     /// Initializes a new request
     /// </summary>
-    public SendVenueRequest() : base("sendVenue")
+    public SendVenueRequest() : base("sendVenue", TelegramBotClientJsonSerializerContext.Instance.SendVenueRequest)
     { }
 }

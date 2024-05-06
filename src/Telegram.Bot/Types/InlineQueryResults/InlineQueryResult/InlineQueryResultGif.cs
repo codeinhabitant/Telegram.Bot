@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Telegram.Bot.Types.Enums;
 
 // ReSharper disable once CheckNamespace
@@ -87,25 +86,4 @@ public class InlineQueryResultGif : InlineQueryResult
     [JsonInclude]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public InputMessageContent? InputMessageContent { get; set; }
-
-    /// <summary>
-    /// Initializes a new inline query result
-    /// </summary>
-    /// <param name="id">Unique identifier of this result</param>
-    /// <param name="gifUrl">Width of the GIF</param>
-    /// <param name="thumbnailUrl">Url of the thumbnail for the result.</param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public InlineQueryResultGif(string id, string gifUrl, string thumbnailUrl)
-        : base(id)
-    {
-        GifUrl = gifUrl;
-        ThumbnailUrl = thumbnailUrl;
-    }
-
-    /// <summary>
-    /// Initializes a new inline query result
-    /// </summary>
-    public InlineQueryResultGif()
-    { }
 }

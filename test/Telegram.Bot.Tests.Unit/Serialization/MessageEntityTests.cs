@@ -1,7 +1,6 @@
 ﻿using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Xunit;
-using JsonSerializerOptionsProvider = Telegram.Bot.Serialization.JsonSerializerOptionsProvider;
 
 namespace Telegram.Bot.Tests.Unit.Serialization;
 
@@ -19,7 +18,7 @@ public class MessageEntityTests
         }
         """;
 
-        MessageEntity? message = JsonSerializer.Deserialize<MessageEntity>(json, JsonSerializerOptionsProvider.Options);
+        MessageEntity? message = JsonSerializer.Deserialize(json, TelegramBotClientJsonSerializerContext.Instance.MessageEntity);
 
         Assert.NotNull(message);
         Assert.Equal(MessageEntityType.PhoneNumber, message.Type);
@@ -35,7 +34,7 @@ public class MessageEntityTests
             Type = MessageEntityType.PhoneNumber
         };
 
-        string json = JsonSerializer.Serialize(messageEntity, JsonSerializerOptionsProvider.Options);
+        string json = JsonSerializer.Serialize(messageEntity, TelegramBotClientJsonSerializerContext.Instance.MessageEntity);
         JsonNode? root = JsonNode.Parse(json);
         Assert.NotNull(root);
         JsonObject j = Assert.IsAssignableFrom<JsonObject>(root);
@@ -58,30 +57,23 @@ public class MessageEntityTests
         }
         """;
 
-        MessageEntity? message = JsonSerializer.Deserialize<MessageEntity>(json, JsonSerializerOptionsProvider.Options);
+        MessageEntity? message = JsonSerializer.Deserialize(json, TelegramBotClientJsonSerializerContext.Instance.MessageEntity);
 
         Assert.NotNull(message);
-        Assert.Equal((MessageEntityType)0, message.Type);
+        Assert.Equal(MessageEntityType.FallbackUnsupported, message.Type);
     }
 
-    [Fact(DisplayName = "Should serialize message entity with unknown type")]
-    public void Should_Serialize_Message_Entity_With_Unknown_Type()
+    [Fact]
+    public void Should_Throw_JsonException_For_Incorrect_MessageEntityType()
     {
         MessageEntity messageEntity = new()
         {
             Length = 10,
             Offset = 10,
-            Type = 0
+            Type = (MessageEntityType)int.MaxValue
         };
 
-        string json = JsonSerializer.Serialize(messageEntity, JsonSerializerOptionsProvider.Options);
-        JsonNode? root = JsonNode.Parse(json);
-        Assert.NotNull(root);
-        JsonObject j = Assert.IsAssignableFrom<JsonObject>(root);
-
-        Assert.Equal(3, j.Count);
-        Assert.Equal(10, (long?)j["length"]);
-        Assert.Equal(10, (long?)j["offset"]);
-        Assert.Equal("unknown", (string?)j["type"]);
+        Assert.Throws<JsonException>(() =>
+            JsonSerializer.Serialize(messageEntity, TelegramBotClientJsonSerializerContext.Instance.MessageEntity));
     }
 }

@@ -1,5 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-
 // ReSharper disable once CheckNamespace
 namespace Telegram.Bot.Requests;
 
@@ -64,17 +62,7 @@ public class AnswerCallbackQueryRequest : RequestBase<bool>
     /// <summary>
     /// Initializes a new request with callbackQueryId
     /// </summary>
-    public AnswerCallbackQueryRequest() : base("answerCallbackQuery") { }
-
-    /// <summary>
-    /// Initializes a new request with callbackQueryId
-    /// </summary>
-    /// <param name="callbackQueryId">Unique identifier for the query to be answered</param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public AnswerCallbackQueryRequest(string callbackQueryId)
-        : this()
-    {
-        CallbackQueryId = callbackQueryId;
-    }
+    public AnswerCallbackQueryRequest()
+        : base("answerCallbackQuery", TelegramBotClientJsonSerializerContext.Instance.AnswerCallbackQueryRequest)
+    {}
 }

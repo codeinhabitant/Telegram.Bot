@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Telegram.Bot.Requests.Abstractions;
 using Telegram.Bot.Types.ReplyMarkups;
 
@@ -94,27 +93,9 @@ public class SendLocationRequest : RequestBase<Message>, IChatTargetable, IBusin
     public IReplyMarkup? ReplyMarkup { get; set; }
 
     /// <summary>
-    /// Initializes a new request with chatId, latitude and longitude
-    /// </summary>
-    /// <param name="chatId">Unique identifier for the target chat or username of the target channel
-    /// (in the format <c>@channelusername</c>)
-    /// </param>
-    /// <param name="latitude">Latitude of the location</param>
-    /// <param name="longitude">Longitude of the location</param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public SendLocationRequest(ChatId chatId, double latitude, double longitude)
-        : this()
-    {
-        ChatId = chatId;
-        Latitude = latitude;
-        Longitude = longitude;
-    }
-
-    /// <summary>
     /// Initializes a new request
     /// </summary>
     public SendLocationRequest()
-        : base("sendLocation")
+        : base("sendLocation", TelegramBotClientJsonSerializerContext.Instance.SendLocationRequest)
     { }
 }

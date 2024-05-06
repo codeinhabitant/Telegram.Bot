@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using Telegram.Bot.Serialization;
 using Telegram.Bot.Types;
 using Xunit;
 
@@ -9,6 +8,7 @@ namespace Telegram.Bot.Tests.Integ.Framework;
 
 public static class Asserts
 {
+    // ReSharper disable once CognitiveComplexity
     public static void JsonEquals(
         object expected,
         object actual,
@@ -20,8 +20,8 @@ public static class Asserts
         }
         else
         {
-            JsonNode expectedNode = JsonSerializer.SerializeToNode(expected, JsonSerializerOptionsProvider.Options);
-            JsonNode actualNode = JsonSerializer.SerializeToNode(actual, JsonSerializerOptionsProvider.Options);
+            JsonNode expectedNode = JsonSerializer.SerializeToNode(expected, TelegramBotClientJsonSerializerContext.JsonSerializerOptions);
+            JsonNode actualNode = JsonSerializer.SerializeToNode(actual, TelegramBotClientJsonSerializerContext.JsonSerializerOptions);
 
             if (expectedNode is null) throw new ArgumentException("Couldn't serialize expected object");
             if (actualNode is null) throw new ArgumentException("Couldn't serialize actual object");
@@ -44,8 +44,8 @@ public static class Asserts
             else
             {
                 // Print out both JSON values in the case of an inequality
-                string expectedJson = JsonSerializer.Serialize(expectedNode, JsonSerializerOptionsProvider.Options);
-                string actualJson = JsonSerializer.Serialize(actualNode, JsonSerializerOptionsProvider.Options);
+                string expectedJson = JsonSerializer.Serialize(expectedNode, TelegramBotClientJsonSerializerContext.JsonSerializerOptions);
+                string actualJson = JsonSerializer.Serialize(actualNode, TelegramBotClientJsonSerializerContext.JsonSerializerOptions);
                 Assert.Equal(expectedJson, actualJson);
             }
         }
@@ -61,7 +61,8 @@ public static class Asserts
             [
                 "can_join_groups",
                 "can_read_all_group_messages",
-                "supports_inline_queries"
+                "supports_inline_queries",
+                "can_connect_to_business",
             ]
         );
     }

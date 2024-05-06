@@ -29,11 +29,11 @@ public class TestsFixture : IDisposable
 
     public UpdateReceiver UpdateReceiver { get; private set; }
 
-    public Chat SupergroupChat { get; private set; }
+    public ChatFullInfo SupergroupChat { get; private set; }
 
-    public Chat PrivateChat { get; set; }
+    public ChatFullInfo PrivateChat { get; set; }
 
-    public Chat ChannelChat { get; set; }
+    public ChatFullInfo ChannelChat { get; set; }
 
     public RunSummary RunSummary { get; } = new();
 
@@ -116,7 +116,7 @@ public class TestsFixture : IDisposable
             )
         );
 
-    public async Task<Chat> GetChatFromTesterAsync(
+    public async Task<ChatFullInfo> GetChatFromTesterAsync(
         ChatType chatType,
         CancellationToken cancellationToken = default)
     {
@@ -139,9 +139,14 @@ public class TestsFixture : IDisposable
 
         await UpdateReceiver.DiscardNewUpdatesAsync(cancellationToken);
 
-        return chatType == ChatType.Channel
-            ? ((MessageOriginChannel)update.Message?.ForwardOrigin)!.Chat
-            : update.Message?.Chat;
+        long? chatId = (chatType == ChatType.Channel)
+            ? ((MessageOriginChannel)update.Message?.ForwardOrigin)!.Chat.Id
+            : update.Message?.Chat.Id;
+
+        ChatFullInfo chat =
+            BotClient.GetChatAsync(new GetChatRequest {ChatId = chatId!.Value }, cancellationToken).Result;
+
+        return chat;
     }
 
     public async Task<Chat> GetChatFromAdminAsync()
@@ -262,7 +267,7 @@ public class TestsFixture : IDisposable
         return task;
     }
 
-    async Task<Chat> FindSupergroupTestChatAsync(CancellationToken cancellationToken = default)
+    async Task<ChatFullInfo> FindSupergroupTestChatAsync(CancellationToken cancellationToken = default)
     {
         var supergroupChatId = Configuration.SuperGroupChatId;
         return await BotClient.GetChatAsync(new GetChatRequest {ChatId = supergroupChatId}, cancellationToken);

@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Telegram.Bot.Requests.Abstractions;
 
 // ReSharper disable once CheckNamespace
@@ -35,26 +34,9 @@ public class DeleteMessageRequest : RequestBase<bool>, IChatTargetable
     public required int MessageId { get; init; }
 
     /// <summary>
-    /// Initializes a new request with chatId and messageId
-    /// </summary>
-    /// <param name="chatId">
-    /// Unique identifier for the target chat or username of the target channel
-    /// (in the format <c>@channelusername</c>)
-    /// </param>
-    /// <param name="messageId">Identifier of the message to delete</param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public DeleteMessageRequest(ChatId chatId, int messageId)
-        : this()
-    {
-        ChatId = chatId;
-        MessageId = messageId;
-    }
-
-    /// <summary>
     /// Initializes a new request
     /// </summary>
     public DeleteMessageRequest()
-        : base("deleteMessage")
+        : base("deleteMessage", TelegramBotClientJsonSerializerContext.Instance.DeleteMessageRequest)
     { }
 }

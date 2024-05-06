@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Telegram.Bot.Requests.Abstractions;
 
 // ReSharper disable once CheckNamespace
@@ -65,33 +64,9 @@ public class CopyMessagesRequest : RequestBase<MessageId[]>, IChatTargetable
     public bool? RemoveCaption { get; set; }
 
     /// <summary>
-    /// Initializes a new request with chatId, fromChatId and messageIds
-    /// </summary>
-    /// <param name="chatId">Unique identifier for the target chat or username of the target channel
-    /// (in the format <c>@channelusername</c>)
-    /// </param>
-    /// <param name="fromChatId">
-    /// Unique identifier for the chat where the original messages were sent
-    /// (or channel username in the format <c>@channelusername</c>)
-    /// </param>
-    /// <param name="messageIds">
-    /// Identifiers of 1-100 messages in the chat <see cref="FromChatId"/> to copy.
-    /// The identifiers must be specified in a strictly increasing order.
-    /// </param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public CopyMessagesRequest(ChatId chatId, ChatId fromChatId, int[] messageIds)
-        : this()
-    {
-        ChatId = chatId;
-        FromChatId = fromChatId;
-        MessageIds = messageIds;
-    }
-
-    /// <summary>
     /// Initializes a new request
     /// </summary>
     public CopyMessagesRequest()
-        : base("copyMessages")
+        : base("copyMessages", TelegramBotClientJsonSerializerContext.Instance.CopyMessagesRequest)
     { }
 }

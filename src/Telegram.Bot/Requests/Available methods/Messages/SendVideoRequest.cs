@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using Telegram.Bot.Extensions;
 using Telegram.Bot.Requests.Abstractions;
@@ -120,57 +119,17 @@ public class SendVideoRequest : FileRequestBase<Message>, IChatTargetable, IBusi
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public IReplyMarkup? ReplyMarkup { get; set; }
 
-    /// <inheritdoc cref="Abstractions.Documentation.ReplyToMessageId"/>
-    [Obsolete($"This property is deprecated, use {nameof(ReplyParameters)} instead")]
-    [JsonIgnore]
-    public int? ReplyToMessageId
-    {
-        get => ReplyParameters?.MessageId;
-        set
-        {
-            if (value is null)
-            {
-                ReplyParameters = null;
-            }
-            else
-            {
-                ReplyParameters ??= new();
-                ReplyParameters.MessageId = value.Value;
-            }
-        }
-    }
-
-    /// <summary>
-    /// Initializes a new request with chatId and video
-    /// </summary>
-    /// <param name="chatId">Unique identifier for the target chat or username of the target channel
-    /// (in the format <c>@channelusername</c>)
-    /// </param>
-    /// <param name="video">
-    /// Video to send. Pass a <see cref="InputFileId"/> as String to send a video that
-    /// exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to
-    /// get a video from the Internet, or upload a new video using multipart/form-data
-    /// </param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public SendVideoRequest(ChatId chatId, InputFile video)
-        : this()
-    {
-        ChatId = chatId;
-        Video = video;
-    }
-
     /// <summary>
     /// Initializes a new request
     /// </summary>
     public SendVideoRequest()
-        : base("sendVideo")
+        : base("sendVideo", TelegramBotClientJsonSerializerContext.Instance.SendVideoRequest)
     { }
 
     /// <inheritdoc />
     public override HttpContent? ToHttpContent() =>
         Video is InputFileStream || Thumbnail is InputFileStream
-            ? GenerateMultipartFormDataContent("video", "thumbnail")
+            ? GenerateMultipartFormDataContent(TelegramBotClientJsonSerializerContext.Instance.SendVideoRequest, "video", "thumbnail")
                 .AddContentIfInputFile(media: Video, name: "video")
                 .AddContentIfInputFile(media: Thumbnail, name: "thumbnail")
             : base.ToHttpContent();

@@ -39,21 +39,4 @@ public class InlineQueryResultsButton
     [JsonInclude]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? StartParameter { get; set; }
-
-    /// <summary>
-    /// Initializes a new <see cref="InlineQueryResultsButton"/> object
-    /// </summary>
-    /// <param name="text">
-    /// Label text on the button
-    /// </param>
-    public InlineQueryResultsButton(string text)
-    {
-        Text = text;
-    }
-
-    /// <summary>
-    /// Initializes a new <see cref="InlineQueryResultsButton"/> object
-    /// </summary>
-    public InlineQueryResultsButton()
-    { }
 }

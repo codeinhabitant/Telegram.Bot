@@ -1,4 +1,6 @@
-﻿namespace Telegram.Bot.Types.Enums;
+﻿using Telegram.Bot.Serialization.EnumConverters;
+
+namespace Telegram.Bot.Types.Enums;
 
 /// <summary>
 /// The part of the face relative to which the mask should be placed.
@@ -6,6 +8,11 @@
 [JsonConverter(typeof(MaskPositionPointConverter))]
 public enum MaskPositionPoint
 {
+    /// <summary>
+    /// Represents of a new unsupported type.
+    /// </summary>
+    FallbackUnsupported = 0,
+
     /// <summary>
     /// The forehead
     /// </summary>

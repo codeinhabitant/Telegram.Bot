@@ -41,7 +41,7 @@ public class UpdateReceiver(ITelegramBotClient botClient, IEnumerable<string>? a
                     new()
                     {
                         Offset = offset,
-                        AllowedUpdates = Enum.GetValues<UpdateType>().Where(u => u != UpdateType.Unknown)
+                        AllowedUpdates = Enum.GetValues<UpdateType>().Where(u => u != UpdateType.FallbackUnsupported)
                     },
                     cancellationToken: cancellationToken
                 );

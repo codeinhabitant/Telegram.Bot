@@ -1,7 +1,6 @@
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Xunit;
-using JsonSerializerOptionsProvider = Telegram.Bot.Serialization.JsonSerializerOptionsProvider;
 
 namespace Telegram.Bot.Tests.Unit.Serialization;
 
@@ -22,9 +21,7 @@ public class DocumentSerializationTests
             Chat = new()
             {
                 Id = -9_877_654_320_000,
-                Title = "Test Chat",
-                Type = ChatType.Supergroup,
-                CanSetStickerSet = true
+                Type = ChatType.Supergroup
             },
             Document = new()
             {
@@ -46,7 +43,7 @@ public class DocumentSerializationTests
             Caption = "Test Document Description"
         };
 
-        string json = JsonSerializer.Serialize(documentMessage, JsonSerializerOptionsProvider.Options);
+        string json = JsonSerializer.Serialize(documentMessage, TelegramBotClientJsonSerializerContext.Instance.Message);
 
         Assert.NotNull(json);
 
@@ -81,11 +78,9 @@ public class DocumentSerializationTests
         JsonNode? chatNode = j["chat"];
         Assert.NotNull(chatNode);
         JsonObject chat = Assert.IsAssignableFrom<JsonObject>(chatNode);
-        Assert.Equal(4, chat.Count);
+        Assert.Equal(2, chat.Count);
         Assert.Equal(-9_877_654_320_000, (long?)chat["id"]);
-        Assert.Equal("Test Chat", (string?)chat["title"]);
         Assert.Equal("supergroup", (string?)chat["type"]);
-        Assert.Equal(true, (bool?)chat["can_set_sticker_set"]);
     }
 
     [Fact(DisplayName = "Should deserialize a document message")]
@@ -106,17 +101,7 @@ public class DocumentSerializationTests
             "date": 1503172015,
             "chat": {
                 "id": -9877654320000,
-                "type": "supergroup",
-                "title": "Test Chat",
-                "username": null,
-                "first_name": null,
-                "last_name": null,
-                "all_members_are_administrators": false,
-                "photo": null,
-                "description": null,
-                "invite_link": null,
-                "sticker_set_name": null,
-                "can_set_sticker_set": null
+                "type": "supergroup"
             },
             "forward_from": null,
             "forward_from_chat": null,
@@ -163,11 +148,11 @@ public class DocumentSerializationTests
         }
         """;
 
-        Message? message = JsonSerializer.Deserialize<Message>(json, JsonSerializerOptionsProvider.Options);
+        Message? message =
+            JsonSerializer.Deserialize(json, TelegramBotClientJsonSerializerContext.Instance.Message);
 
         Assert.NotNull(message);
         Assert.Equal(MessageType.Document, message.Type);
         Assert.Equal("test_file.txt", message.Document?.FileName);
-        Assert.Null(message.Chat.CanSetStickerSet);
     }
 }

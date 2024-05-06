@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Telegram.Bot.Requests.Abstractions;
 using Telegram.Bot.Types.ReplyMarkups;
 
@@ -60,47 +59,10 @@ public class SendGameRequest : RequestBase<Message>, IChatTargetable, IBusinessC
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public InlineKeyboardMarkup? ReplyMarkup { get; set; }
 
-    /// <inheritdoc cref="Abstractions.Documentation.ReplyToMessageId"/>
-    [Obsolete($"This property is deprecated, use {nameof(ReplyParameters)} instead")]
-    [JsonIgnore]
-    public int? ReplyToMessageId
-    {
-        get => ReplyParameters?.MessageId;
-        set
-        {
-            if (value is null)
-            {
-                ReplyParameters = null;
-            }
-            else
-            {
-                ReplyParameters ??= new();
-                ReplyParameters.MessageId = value.Value;
-            }
-        }
-    }
-
-    /// <summary>
-    /// Initializes a new request with chatId and gameShortName
-    /// </summary>
-    /// <param name="chatId">Unique identifier for the target chat</param>
-    /// <param name="gameShortName">
-    /// Short name of the game, serves as the unique identifier for the game. Set up your games via
-    /// <a href="https://t.me/botfather">@BotFather</a>
-    /// </param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public SendGameRequest(long chatId, string gameShortName)
-        : this()
-    {
-        ChatId = chatId;
-        GameShortName = gameShortName;
-    }
-
     /// <summary>
     /// Initializes a new request
     /// </summary>
     public SendGameRequest()
-        : base("sendGame")
+        : base("sendGame", TelegramBotClientJsonSerializerContext.Instance.SendGameRequest)
     { }
 }

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using Telegram.Bot.Extensions;
 using Telegram.Bot.Requests.Abstractions;
@@ -45,12 +44,6 @@ public class CreateNewStickerSetRequest : FileRequestBase<bool>, IUserTargetable
     public required IEnumerable<InputSticker> Stickers { get; init; }
 
     /// <summary>
-    /// Format of stickers in the set.
-    /// </summary>
-    [Obsolete("This property is no longer recognised by Telegram")]
-    public StickerFormat StickerFormat { get; init; }
-
-    /// <summary>
     /// Type of stickers in the set.
     /// By default, a regular sticker set is created.
     /// </summary>
@@ -69,54 +62,16 @@ public class CreateNewStickerSetRequest : FileRequestBase<bool>, IUserTargetable
     public bool? NeedsRepainting { get; set; }
 
     /// <summary>
-    /// Initializes a new request with userId, name, title, stickers and stickerFormat
-    /// </summary>
-    /// <param name="userId">
-    /// User identifier of sticker set owner
-    /// </param>
-    /// <param name="name">
-    /// Short name of sticker set, to be used in <c>t.me/addstickers/</c> URLs (e.g., <i>animals</i>).
-    /// Can contain only english letters, digits and underscores. Must begin with a letter, can't
-    /// contain consecutive underscores and must end in <i>"_by_&lt;bot username&gt;"</i>.
-    /// <i>&lt;bot_username&gt;</i> is case insensitive. 1-64 characters
-    /// </param>
-    /// <param name="title">
-    /// Sticker set title, 1-64 characters
-    /// </param>
-    /// <param name="stickers">
-    /// A list of 1-50 initial stickers to be added to the sticker set
-    /// </param>
-    /// <param name="stickerFormat">
-    /// Format of stickers in the set.
-    /// </param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public CreateNewStickerSetRequest(
-        long userId,
-        string name,
-        string title,
-        IEnumerable<InputSticker> stickers,
-        StickerFormat stickerFormat)
-        : this()
-    {
-        UserId = userId;
-        Name = name;
-        Title = title;
-        Stickers = stickers;
-        StickerFormat = stickerFormat;
-    }
-
-    /// <summary>
     /// Initializes a new request
     /// </summary>
     public CreateNewStickerSetRequest()
-        : base("createNewStickerSet")
+        : base("createNewStickerSet", TelegramBotClientJsonSerializerContext.Instance.CreateNewStickerSetRequest)
     { }
 
     /// <inheritdoc/>
     public override HttpContent ToHttpContent()
     {
-        var multipartContent = GenerateMultipartFormDataContent();
+        var multipartContent = GenerateMultipartFormDataContent(TelegramBotClientJsonSerializerContext.Instance.CreateNewStickerSetRequest);
 
         foreach (var inputSticker in Stickers)
         {

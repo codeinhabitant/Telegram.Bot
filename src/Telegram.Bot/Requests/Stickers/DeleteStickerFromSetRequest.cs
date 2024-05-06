@@ -1,4 +1,4 @@
-using System.Diagnostics.CodeAnalysis;
+
 
 // ReSharper disable once CheckNamespace
 namespace Telegram.Bot.Requests;
@@ -15,24 +15,11 @@ public class DeleteStickerFromSetRequest : RequestBase<bool>
     [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
     public required InputFileId Sticker { get; init; }
 
-    /// <summary>
-    /// Initializes a new request with sticker
-    /// </summary>
-    /// <param name="sticker">
-    /// <see cref="InputFileId">File identifier</see> of the sticker
-    /// </param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public DeleteStickerFromSetRequest(InputFileId sticker)
-        : this()
-    {
-        Sticker = sticker;
-    }
 
     /// <summary>
     /// Initializes a new request with sticker
     /// </summary>
     public DeleteStickerFromSetRequest()
-        : base("deleteStickerFromSet")
+        : base("deleteStickerFromSet", TelegramBotClientJsonSerializerContext.Instance.DeleteStickerFromSetRequest)
     { }
 }

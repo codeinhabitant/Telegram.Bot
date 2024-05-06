@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Telegram.Bot.Requests.Abstractions;
 
 // ReSharper disable once CheckNamespace
@@ -17,23 +16,8 @@ public class GetChatMemberCountRequest : RequestBase<int>, IChatTargetable
     /// <summary>
     /// Initializes a new request with chatId
     /// </summary>
-    /// <param name="chatId">
-    /// Unique identifier for the target chat or username of the target supergroup or channel
-    /// (in the format <c>@channelusername</c>)
-    /// </param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public GetChatMemberCountRequest(ChatId chatId)
-        : this()
-    {
-        ChatId = chatId;
-    }
-
-    /// <summary>
-    /// Initializes a new request with chatId
-    /// </summary>
     [JsonConstructor]
     public GetChatMemberCountRequest()
-        : base("getChatMemberCount")
+        : base("getChatMemberCount", TelegramBotClientJsonSerializerContext.Instance.GetChatMemberCountRequest)
     { }
 }

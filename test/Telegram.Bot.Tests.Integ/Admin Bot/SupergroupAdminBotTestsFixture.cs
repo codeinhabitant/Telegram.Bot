@@ -25,7 +25,7 @@ public class SupergroupAdminBotTestsFixture : AsyncLifetimeFixture
         AddLifetime(
             initializer: async () =>
             {
-                Chat chat = await TestsFixture.BotClient.GetChatAsync(new GetChatRequest { ChatId = TestsFixture.SupergroupChat });
+                ChatFullInfo chat = await TestsFixture.BotClient.GetChatAsync(new GetChatRequest { ChatId = TestsFixture.SupergroupChat });
 
                 // Save existing chat photo as byte[] to restore it later because Bot API 4.4+ invalidates old
                 // file_ids after changing chat photo

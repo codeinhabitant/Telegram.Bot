@@ -3,13 +3,12 @@ namespace Telegram.Bot.Types.Enums;
 /// <summary>
 /// The type of a <see cref="Message"/>
 /// </summary>
-[JsonConverter(typeof(MessageTypeConverter))]
 public enum MessageType
 {
     /// <summary>
-    /// The <see cref="Message"/> is unknown
+    /// The <see cref="Message"/> is unsupported
     /// </summary>
-    Unknown = 0,
+    FallbackUnsupported = 0,
 
     /// <summary>
     /// The <see cref="Message"/> contains <see cref="Message.Text"/>
@@ -227,12 +226,6 @@ public enum MessageType
     WriteAccessAllowed,
 
     /// <summary>
-    /// The <see cref="Message"/> contains a <see cref="Message.UserShared"/>
-    /// </summary>
-    [Obsolete($"This member is obsolete, use {nameof(MessageType)}.{nameof(UsersShared)} instead")]
-    UserShared,
-
-    /// <summary>
     /// The <see cref="Message"/> contains a <see cref="Message.UsersShared"/>
     /// </summary>
     UsersShared,
@@ -276,4 +269,9 @@ public enum MessageType
     /// The <see cref="Message"/> contains a <see cref="Message.BoostAdded"/>
     /// </summary>
     BoostAdded,
+
+    /// <summary>
+    /// The <see cref="Message"/> contains a <see cref="Message.ChatBackgroundSet"/>
+    /// </summary>
+    ChatBackgroundSet,
 }

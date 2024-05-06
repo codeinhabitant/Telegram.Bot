@@ -1,7 +1,4 @@
 // ReSharper disable once CheckNamespace
-
-using System.Diagnostics.CodeAnalysis;
-
 namespace Telegram.Bot.Requests;
 
 /// <summary>
@@ -28,21 +25,9 @@ public class GetFileRequest : RequestBase<File>
     public required string FileId { get; init; }
 
     /// <summary>
-    /// Initializes a new request with <see cref="FileId"/>
-    /// </summary>
-    /// <param name="fileId">File identifier to get info about</param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public GetFileRequest(string fileId)
-        : this()
-    {
-        FileId = fileId;
-    }
-
-    /// <summary>
     /// Initializes a new request
     /// </summary>
     public GetFileRequest()
-        : base("getFile")
+        : base("getFile", TelegramBotClientJsonSerializerContext.Instance.GetFileRequest)
     { }
 }

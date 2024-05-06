@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Telegram.Bot.Types.Enums;
 
 // ReSharper disable once CheckNamespace
@@ -21,16 +20,6 @@ public class InputMediaPhoto :
     [JsonInclude]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public bool? HasSpoiler { get; set; }
-
-    /// <summary>
-    /// Initializes a new photo media to send with an <see cref="InputFile"/>
-    /// </summary>
-    /// <param name="media">File to send</param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public InputMediaPhoto(InputFile media)
-        : base(media)
-    { }
 
     /// <summary>
     /// Initializes a new photo media to send with an <see cref="InputFile"/>

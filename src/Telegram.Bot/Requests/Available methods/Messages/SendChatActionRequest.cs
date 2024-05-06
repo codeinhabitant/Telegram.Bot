@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Telegram.Bot.Requests.Abstractions;
 using Telegram.Bot.Types.Enums;
 
@@ -58,27 +57,9 @@ public class SendChatActionRequest : RequestBase<bool>, IChatTargetable, IBusine
     public int? MessageThreadId { get; set; }
 
     /// <summary>
-    /// Initializes a new request chatId and action
-    /// </summary>
-    /// <param name="chatId">Unique identifier for the target chat or username of the target channel
-    /// (in the format <c>@channelusername</c>)
-    /// </param>
-    /// <param name="action">
-    /// Type of action to broadcast. Choose one, depending on what the user is about to receive
-    /// </param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public SendChatActionRequest(ChatId chatId, ChatAction action)
-        : this()
-    {
-        ChatId = chatId;
-        Action = action;
-    }
-
-    /// <summary>
     /// Initializes a new request
     /// </summary>
     public SendChatActionRequest()
-        : base("sendChatAction")
+        : base("sendChatAction", TelegramBotClientJsonSerializerContext.Instance.SendChatActionRequest)
     { }
 }

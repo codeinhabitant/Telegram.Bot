@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Telegram.Bot.Types.ReplyMarkups;
 
 // ReSharper disable once CheckNamespace
@@ -21,21 +20,9 @@ public class StopInlineMessageLiveLocationRequest : RequestBase<bool>
     public InlineKeyboardMarkup? ReplyMarkup { get; set; }
 
     /// <summary>
-    /// Initializes a new request with inlineMessageId
-    /// </summary>
-    /// <param name="inlineMessageId">Identifier of the inline message</param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public StopInlineMessageLiveLocationRequest(string inlineMessageId)
-        : this()
-    {
-        InlineMessageId = inlineMessageId;
-    }
-
-    /// <summary>
     /// Initializes a new request
     /// </summary>
     public StopInlineMessageLiveLocationRequest()
-        : base("stopMessageLiveLocation")
+        : base("stopMessageLiveLocation", TelegramBotClientJsonSerializerContext.Instance.StopInlineMessageLiveLocationRequest)
     { }
 }

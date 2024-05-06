@@ -1,4 +1,3 @@
-using Telegram.Bot.Serialization;
 using Telegram.Bot.Types.Enums;
 
 namespace Telegram.Bot.Types;
@@ -11,17 +10,27 @@ namespace Telegram.Bot.Types;
 /// <item><see cref="ChatBoostSourceGiveaway"/></item>
 /// </list>
 /// </summary>
-[CustomJsonPolymorphic("source")]
-[CustomJsonDerivedType(typeof(ChatBoostSourcePremium), "premium")]
-[CustomJsonDerivedType(typeof(ChatBoostSourceGiftCode), "gift_code")]
-[CustomJsonDerivedType(typeof(ChatBoostSourceGiveaway), "giveaway")]
 public abstract class ChatBoostSource
 {
     /// <summary>
     /// Source of the boost
     /// </summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
-    public abstract ChatBoostSourceType Source { get; }
+    public abstract ChatBoostSourceType? Source { get; }
+}
+
+public class ChatBoostSourceFallbackUnsupported : ChatBoostSource
+{
+    /// <inheritdoc />
+    [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
+    public override ChatBoostSourceType? Source => ChatBoostSourceType.FallbackUnsupported;
+
+    private ChatBoostSourceFallbackUnsupported() {}
+
+    /// <summary>
+    /// For optimization purposes, use this instance instead of creating a new one.
+    /// </summary>
+    public static ChatBoostSourceFallbackUnsupported Instance { get; } = new();
 }
 
 /// <summary>
@@ -32,7 +41,7 @@ public class ChatBoostSourcePremium : ChatBoostSource
     /// <summary>
     /// Source of the boost, always "premium"
     /// </summary>
-    public override ChatBoostSourceType Source => ChatBoostSourceType.Premium;
+    public override ChatBoostSourceType? Source => ChatBoostSourceType.Premium;
 
     /// <summary>
     /// User that boosted the chat
@@ -51,7 +60,7 @@ public class ChatBoostSourceGiftCode : ChatBoostSource
     /// <summary>
     /// Source of the boost, always "gift_code"
     /// </summary>
-    public override ChatBoostSourceType Source => ChatBoostSourceType.GiftCode;
+    public override ChatBoostSourceType? Source => ChatBoostSourceType.GiftCode;
 
     /// <summary>
     /// User for which the gift code was created
@@ -70,7 +79,7 @@ public class ChatBoostSourceGiveaway : ChatBoostSource
     /// <summary>
     /// Source of the boost, always "giveaway"
     /// </summary>
-    public override ChatBoostSourceType Source => ChatBoostSourceType.Giveaway;
+    public override ChatBoostSourceType? Source => ChatBoostSourceType.Giveaway;
 
     /// <summary>
     /// Identifier of a message in the chat with the giveaway; the message could have been deleted already.

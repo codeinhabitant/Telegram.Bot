@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Telegram.Bot.Types.Enums;
 
 // ReSharper disable once CheckNamespace
@@ -76,25 +75,4 @@ public class InlineQueryResultPhoto : InlineQueryResult
     [JsonInclude]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public InputMessageContent? InputMessageContent { get; set; }
-
-    /// <summary>
-    /// Initializes a new inline query representing a link to a photo
-    /// </summary>
-    /// <param name="id">Unique identifier of this result</param>
-    /// <param name="photoUrl">A valid URL of the photo. Photo size must not exceed 5MB.</param>
-    /// <param name="thumbnailUrl">Optional. Url of the thumbnail for the result.</param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public InlineQueryResultPhoto(string id, string photoUrl, string thumbnailUrl)
-        : base(id)
-    {
-        PhotoUrl = photoUrl;
-        ThumbnailUrl = thumbnailUrl;
-    }
-
-    /// <summary>
-    /// Initializes a new inline query representing a link to a photo
-    /// </summary>
-    public InlineQueryResultPhoto()
-    { }
 }

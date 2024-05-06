@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Telegram.Bot.Extensions;
 
-internal static class StringExtensions
+public static class StringExtensions
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static string EncodeUtf8(this string value) =>
+    public static string EncodeUtf8(this string value) =>
         new(Encoding.UTF8.GetBytes(value).Select(c => Convert.ToChar(c)).ToArray());
 }

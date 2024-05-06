@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Telegram.Bot.Types.InlineQueryResults;
 
 // ReSharper disable once CheckNamespace
@@ -61,23 +60,9 @@ public class AnswerInlineQueryRequest : RequestBase<bool>
     public InlineQueryResultsButton? Button { get; set; }
 
     /// <summary>
-    /// Initializes a new request with inlineQueryId and an array of <see cref="InlineQueryResult"/>
-    /// </summary>
-    /// <param name="inlineQueryId">Unique identifier for the answered query</param>
-    /// <param name="results">An array of results for the inline query</param>
-    [SetsRequiredMembers]
-    [Obsolete("Use parameterless constructor with required properties")]
-    public AnswerInlineQueryRequest(string inlineQueryId, IEnumerable<InlineQueryResult> results)
-        : this()
-    {
-        InlineQueryId = inlineQueryId;
-        Results = results;
-    }
-
-    /// <summary>
     /// Initializes a new request
     /// </summary>
     public AnswerInlineQueryRequest()
-        : base("answerInlineQuery")
+        : base("answerInlineQuery", TelegramBotClientJsonSerializerContext.Instance.AnswerInlineQueryRequest)
     { }
 }

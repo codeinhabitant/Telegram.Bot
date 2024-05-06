@@ -1,15 +1,18 @@
+using Telegram.Bot.Serialization.EnumConverters;
+
 namespace Telegram.Bot.Types.Enums;
 
 /// <summary>
 /// The type of an <see cref="Update"/>
 /// </summary>
+// [JsonConverter(typeof(UpdateTypeConverter))]
 [JsonConverter(typeof(UpdateTypeConverter))]
 public enum UpdateType
 {
     /// <summary>
     /// Update Type is unknown
     /// </summary>
-    Unknown = 0,
+    FallbackUnsupported = 0,
 
     /// <summary>
     /// The <see cref="Update"/> contains a <see cref="Update.Message"/>.

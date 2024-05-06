@@ -1,4 +1,6 @@
-﻿namespace Telegram.Bot.Types.Enums;
+﻿using Telegram.Bot.Serialization.EnumConverters;
+
+namespace Telegram.Bot.Types.Enums;
 
 /// <summary>
 /// Type of the <see cref="MenuButton"/>
@@ -6,6 +8,11 @@
 [JsonConverter(typeof(MenuButtonTypeConverter))]
 public enum MenuButtonType
 {
+    /// <summary>
+    /// Represents of a new unsupported type.
+    /// </summary>
+    FallbackUnsupported = 0,
+
     /// <summary>
     /// Describes that no specific value for the menu button was set.
     /// </summary>
