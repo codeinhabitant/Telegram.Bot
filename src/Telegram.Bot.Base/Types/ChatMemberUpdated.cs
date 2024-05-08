@@ -56,5 +56,12 @@ public class ChatMemberUpdated
     /// </summary>
     [JsonInclude]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public bool? ViaJoinRequest { get; set; }
+
+    /// <summary>
+    /// Optional. <see langword="true"/>, if the user joined the chat via a chat folder invite link
+    /// </summary>
+    [JsonInclude]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public bool? ViaChatFolderInviteLink { get; set; }
 }

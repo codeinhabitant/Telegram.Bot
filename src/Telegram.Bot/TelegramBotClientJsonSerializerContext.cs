@@ -179,6 +179,7 @@ namespace Telegram.Bot;
 [JsonSerializable(typeof(ApiResponse<MessageId>))]
 [JsonSerializable(typeof(ApiResponse<MessageId[]>))]
 [JsonSerializable(typeof(ApiResponse<Sticker[]>))]
+[JsonSerializable(typeof(ApiResponse<ChatFullInfo>))]
 
 #endregion
 
@@ -197,7 +198,6 @@ namespace Telegram.Bot;
 [JsonSerializable(typeof(BotCommandScopeAllGroupChats))]
 [JsonSerializable(typeof(BotCommandScopeAllPrivateChats))]
 [JsonSerializable(typeof(BotCommandScopeDefault))]
-
 [JsonSerializable(typeof(InlineQueryResultCachedAudio))]
 [JsonSerializable(typeof(InlineQueryResultCachedDocument))]
 [JsonSerializable(typeof(InlineQueryResultCachedGif))]
@@ -244,6 +244,13 @@ namespace Telegram.Bot;
 [JsonSerializable(typeof(InputFileUrl))]
 [JsonSerializable(typeof(ReactionTypeKind))]
 [JsonSerializable(typeof(InaccessibleMessage))]
+[JsonSerializable(typeof(BackgroundFillSolid))]
+[JsonSerializable(typeof(BackgroundFillGradient))]
+[JsonSerializable(typeof(BackgroundFillFreeformGradient))]
+[JsonSerializable(typeof(BackgroundTypeFill))]
+[JsonSerializable(typeof(BackgroundTypeWallpaper))]
+[JsonSerializable(typeof(BackgroundTypePattern))]
+[JsonSerializable(typeof(BackgroundTypeChatTheme))]
 
 #endregion
 public partial class TelegramBotClientJsonSerializerContext : JsonSerializerContext
@@ -272,7 +279,9 @@ public partial class TelegramBotClientJsonSerializerContext : JsonSerializerCont
             new ReactionTypeConverter(),
             new MaybeInaccessibleMessageConverter(),
             new AlbumInputMediaConverter(),
-            new InputMediaThumbConverter()
+            new InputMediaThumbConverter(),
+            new BackgroundFillConverter(),
+            new BackgroundTypeConverter(),
         }
     };
 

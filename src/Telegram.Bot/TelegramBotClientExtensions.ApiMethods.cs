@@ -1461,6 +1461,11 @@ public static partial class TelegramBotClientExtensions
     /// <param name="messageId">Identifier of the message to edit</param>
     /// <param name="latitude">Latitude of new location</param>
     /// <param name="longitude">Longitude of new location</param>
+    /// <param name="livePeriod">New period in seconds during which the location can be updated,
+    /// starting from the message send date. If 0x7FFFFFFF is specified, then the location can be updated forever.
+    /// Otherwise, the new value must not exceed the current live_period by more than a day,
+    /// and the live location expiration date must remain within the next 90 days.
+    /// If not specified, then live_period remains unchanged</param>
     /// <param name="horizontalAccuracy">
     /// The radius of uncertainty for the location, measured in meters; 0-1500
     /// </param>
@@ -1488,6 +1493,7 @@ public static partial class TelegramBotClientExtensions
         int messageId,
         double latitude,
         double longitude,
+        int? livePeriod = default,
         float? horizontalAccuracy = default,
         int? heading = default,
         int? proximityAlertRadius = default,
@@ -1502,6 +1508,7 @@ public static partial class TelegramBotClientExtensions
                     MessageId = messageId,
                     Latitude = latitude,
                     Longitude = longitude,
+                    LivePeriod = livePeriod,
                     HorizontalAccuracy = horizontalAccuracy,
                     Heading = heading,
                     ProximityAlertRadius = proximityAlertRadius,
@@ -1813,6 +1820,8 @@ public static partial class TelegramBotClientExtensions
     /// </param>
     /// <param name="question">Poll question, 1-300 characters</param>
     /// <param name="options">A list of answer options, 2-10 strings 1-100 characters each</param>
+    /// <param name="questionParseMode">Mode for parsing entities in the question. See formatting options for more details. Currently, only custom emoji entities are allowed</param>
+    /// <param name="questionEntities">A JSON-serialized list of special entities that appear in the poll question. It can be specified instead of question_parse_mode</param>
     /// <param name="messageThreadId">
     /// Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
     /// </param>
@@ -1875,7 +1884,9 @@ public static partial class TelegramBotClientExtensions
         this ITelegramBotClient botClient,
         ChatId chatId,
         string question,
-        IEnumerable<string> options,
+        IEnumerable<InputPollOption> options,
+        string? questionParseMode = default,
+        IEnumerable<MessageEntity>? questionEntities = default,
         int? messageThreadId = default,
         bool? isAnonymous = default,
         PollType? type = default,
@@ -1900,6 +1911,8 @@ public static partial class TelegramBotClientExtensions
                 {
                     ChatId = chatId,
                     Question = question,
+                    QuestionParseMode = questionParseMode,
+                    QuestionEntities = questionEntities,
                     Options = options,
                     MessageThreadId = messageThreadId,
                     IsAnonymous = isAnonymous,
@@ -3053,7 +3066,7 @@ public static partial class TelegramBotClientExtensions
     /// </param>
     /// <returns>Returns a <see cref="Chat"/> object on success.</returns>
     [Obsolete("Use the overload that accepts the corresponding request class")]
-    public static async Task<Chat> GetChatAsync(
+    public static async Task<ChatFullInfo> GetChatAsync(
         this ITelegramBotClient botClient,
         ChatId chatId,
         CancellationToken cancellationToken = default
@@ -3061,7 +3074,7 @@ public static partial class TelegramBotClientExtensions
         await botClient.ThrowIfNull()
             .MakeRequestAsync(
                 new GetChatRequest { ChatId = chatId },
-                TelegramBotClientJsonSerializerContext.Instance.ApiResponseChat,
+                TelegramBotClientJsonSerializerContext.Instance.ApiResponseChatFullInfo,
                 cancellationToken)
             .ConfigureAwait(false);
 

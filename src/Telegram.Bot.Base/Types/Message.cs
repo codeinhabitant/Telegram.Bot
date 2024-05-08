@@ -568,6 +568,13 @@ public class Message : MaybeInaccessibleMessage
     public ChatBoostAdded? BoostAdded { get; set; }
 
     /// <summary>
+    /// Optional. Service message: chat background set
+    /// </summary>
+    [JsonInclude]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public ChatBackground? ChatBackgroundSet { get; set; }
+
+    /// <summary>
     /// Optional. Service message: forum topic created
     /// </summary>
     [JsonInclude]
@@ -728,6 +735,7 @@ public class Message : MaybeInaccessibleMessage
             { PassportData: not null }                  => MessageType.PassportData,
             { ProximityAlertTriggered: not null }       => MessageType.ProximityAlertTriggered,
             { BoostAdded: not null }                    => MessageType.BoostAdded,
+            { ChatBackgroundSet: not null }             => MessageType.ChatBackgroundSet,
             { ForumTopicCreated: not null }             => MessageType.ForumTopicCreated,
             { ForumTopicEdited: not null }              => MessageType.ForumTopicEdited,
             { ForumTopicClosed: not null }              => MessageType.ForumTopicClosed,

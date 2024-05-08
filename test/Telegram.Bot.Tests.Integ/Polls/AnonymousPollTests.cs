@@ -27,7 +27,12 @@ public class AnonymousPollTests(AnonymousPollTestsFixture classFixture) : IClass
             {
                 ChatId = Fixture.SupergroupChat,
                 Question = "Who shot first?",
-                Options = ["Han Solo", "Greedo", "I don't care"],
+                Options =
+                [
+                    new InputPollOption { Text = "Han Solo" },
+                    new InputPollOption { Text = "Greedo" },
+                    new InputPollOption { Text = "I don't care" }
+                ],
             }
         );
 
@@ -96,7 +101,7 @@ public class AnonymousPollTests(AnonymousPollTestsFixture classFixture) : IClass
                 {
                     ChatId = Fixture.SupergroupChat,
                     Question = "You should never see this poll",
-                    Options = ["The only poll option"],
+                    Options = [new InputPollOption { Text = "The only poll option" }],
                 }
             )
         );

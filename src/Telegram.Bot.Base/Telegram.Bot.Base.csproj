@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
+    <TargetFramework>net7.0</TargetFramework>
     <LangVersion>12</LangVersion>
     <Nullable>enable</Nullable>
     <EnableNETAnalyzers>True</EnableNETAnalyzers>
@@ -24,7 +24,7 @@
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <Title>Telegram Bot Aot Base</Title>
-    <Version>1.0.0-alpha.13</Version>
+    <Version>1.0.0-alpha.15</Version>
     <Description>
       This package contains AOT-friendly types for Telegram.Bot.Aot. The code was originally forked from Telegram.Bot at https://github.com/TelegramBots/Telegram.Bot
     </Description>

@@ -38,11 +38,25 @@ public class SendPollRequest : RequestBase<Message>, IChatTargetable, IBusinessC
     public required string Question { get; init; }
 
     /// <summary>
-    /// A list of answer options, 2-10 strings 1-100 characters each
+    /// Mode for parsing entities in the question. See formatting options for more details. Currently, only custom emoji entities are allowed
+    /// </summary>
+    [JsonInclude]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? QuestionParseMode { get; init; }
+
+    /// <summary>
+    /// A JSON-serialized list of special entities that appear in the poll question. It can be specified instead of question_parse_mode
+    /// </summary>
+    [JsonInclude]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IEnumerable<MessageEntity>? QuestionEntities { get; set; }
+
+    /// <summary>
+    /// A JSON-serialized list of 2-10 answer options
     /// </summary>
     [JsonRequired]
     [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
-    public required IEnumerable<string> Options { get; init; }
+    public required IEnumerable<InputPollOption> Options { get; init; }
 
     /// <summary>
     /// <see langword="true"/>, if the poll needs to be anonymous, defaults to <see langword="true"/>
@@ -172,7 +186,7 @@ public class SendPollRequest : RequestBase<Message>, IChatTargetable, IBusinessC
     /// <param name="options">A list of answer options, 2-10 strings 1-100 characters each</param>
     [SetsRequiredMembers]
     [Obsolete("Use parameterless constructor with required properties")]
-    public SendPollRequest(ChatId chatId, string question, IEnumerable<string> options)
+    public SendPollRequest(ChatId chatId, string question, IEnumerable<InputPollOption> options)
         : this()
     {
         ChatId = chatId;

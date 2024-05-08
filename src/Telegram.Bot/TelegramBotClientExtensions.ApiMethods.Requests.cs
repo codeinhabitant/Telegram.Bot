@@ -848,7 +848,7 @@ public static partial class TelegramBotClientExtensions
     /// A cancellation token that can be used by other objects or threads to receive notice of cancellation
     /// </param>
     /// <returns>Returns a <see cref="Chat"/> object on success.</returns>
-    public static async Task<Chat> GetChatAsync(
+    public static async Task<ChatFullInfo> GetChatAsync(
         this ITelegramBotClient botClient,
         GetChatRequest request,
         CancellationToken cancellationToken = default
@@ -856,7 +856,7 @@ public static partial class TelegramBotClientExtensions
         await botClient.ThrowIfNull()
             .MakeRequestAsync(
                 request,
-                TelegramBotClientJsonSerializerContext.Instance.ApiResponseChat,
+                TelegramBotClientJsonSerializerContext.Instance.ApiResponseChatFullInfo,
                 cancellationToken)
             .ConfigureAwait(false);
 

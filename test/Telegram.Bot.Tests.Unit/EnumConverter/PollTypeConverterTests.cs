@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Telegram.Bot.Requests;
+using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Xunit;
 
@@ -10,10 +11,9 @@ public class PollTypeConverterTests
 {
     [Theory]
     [ClassData(typeof(PollTypeData))]
-    public void Should_Convert_ChatType_To_String(SendPollRequest sendPollRequest, string value)
+    public void Should_Convert_PollType_To_String(SendPollRequest sendPollRequest, string value)
     {
-        string expectedResult = $$"""{"chat_id":1234,"question":"q","options":["a","b"],"type":"{{value}}"}""";
-
+        string expectedResult = $$"""{"chat_id":1234,"question":"q","options":[{"text":"a"},{"text":"b"}],"type":"{{value}}"}""";
         string result = JsonSerializer.Serialize(sendPollRequest, TelegramBotClientJsonSerializerContext.Instance.SendPollRequest);
 
         Assert.Equal(expectedResult, result);
@@ -23,7 +23,7 @@ public class PollTypeConverterTests
     [ClassData(typeof(PollTypeData))]
     public void Should_Convert_String_To_PollType(SendPollRequest expectedResult, string value)
     {
-        string jsonData = $$"""{"chat_id":1234,"question":"q","options":["a","b"],"type":"{{value}}"}""";
+        string jsonData = $$"""{"chat_id":1234,"question":"q","options":[{"text":"a"},{"text":"b"}],"type":"{{value}}"}""";
 
         SendPollRequest? result = JsonSerializer.Deserialize(jsonData, TelegramBotClientJsonSerializerContext.Instance.SendPollRequest);
 
@@ -59,7 +59,11 @@ public class PollTypeConverterTests
             {
                 ChatId = 1234,
                 Question = "q",
-                Options = new[] { "a", "b" },
+                Options = new[]
+                {
+                    new InputPollOption { Text = "a" },
+                    new InputPollOption { Text = "b" }
+                },
                 Type = pollType,
             };
         }
